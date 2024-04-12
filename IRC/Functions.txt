@@ -1,0 +1,129 @@
+socket():
+	Purpose: Creates a communication endpoint for network communication.
+	Parameters: Specifies the type of communication endpoint you want to create (e.g., TCP, UDP).
+	Return value: Returns a socket descriptor, which is like an ID for the communication endpoint.
+
+close():
+	Purpose: Closes a file descriptor or a socket.
+	Parameters: Takes the file descriptor or socket as a parameter.
+	Return value: Returns 0 on success and -1 on failure.
+
+setsockopt():
+	Purpose: Configures various options for a socket, such as setting socket-level options like timeouts, buffer sizes, or enabling specific features.
+	Parameters: Takes the socket descriptor, the level at which the option is defined (e.g., SOL_SOCKET for socket-level options), the specific option to set, a pointer to the option's value, and the size of that value.
+	Return value: Returns 0 on success and -1 on failure.
+
+getsockname():
+	Purpose: Retrieves the local address and port of a socket.
+	Parameters: Takes the socket descriptor, a pointer to a sockaddr structure where the address information will be stored, and a pointer to the length of the sockaddr structure.
+	Return value: Returns 0 on success and -1 on failure.
+
+getprotobyname():
+	Purpose: Retrieves protocol information (like TCP or UDP) based on its name.
+	Parameters: Takes a string containing the name of the protocol (e.g., "tcp" or "udp").
+	Return value: Returns a pointer to a protoent structure containing information about the protocol, including its protocol number.
+
+gethostbyname():
+	Purpose: Retrieves host information (like IP address) based on its name (like a domain name).
+	Parameters: Takes a string containing the name of the host (e.g., "example.com").
+	Return value: Returns a pointer to a hostent structure containing information about the host, including its IP address.
+
+getaddrinfo():
+	Purpose: Converts domain names and service names (like "example.com" and "http") into socket addresses.
+	Parameters: Takes a string containing the hostname (like "example.com"), a string containing the service name or port number (like "http" or "80"), a pointer to a struct addrinfo that holds the address information, and optional hints to filter the results.
+	Return value: Returns 0 on success and a non-zero error code if it fails.
+
+freeaddrinfo():
+	Purpose: Frees memory allocated by the getaddrinfo() function.
+	Parameters: Takes a pointer to the addrinfo structure that was allocated by getaddrinfo().
+	Return value: Doesn't return anything.
+
+bind():
+	Purpose: Associates a socket with a specific network address and port number.
+	Parameters: Takes the socket descriptor, a pointer to a sockaddr structure containing the address information (like IP address and port number), and the size of the sockaddr structure.
+	Return value: Returns 0 on success and -1 on failure.
+
+connect():
+	Purpose: Establishes a connection to a remote socket.
+	Parameters: Takes the socket descriptor, a pointer to a sockaddr structure containing the address information of the remote socket (like IP address and port number), and the size of the sockaddr structure.
+	Return value: Returns 0 on success and -1 on failure.
+
+listen():
+	Purpose: Sets up a socket to accept incoming connections.
+	Parameters: Takes the socket descriptor and a backlog parameter, which specifies the maximum number of pending connections that can be queued up.
+	Return value: Returns 0 on success and -1 on failure.
+
+accept():
+	Purpose: Accepts a pending connection on a listening socket.
+	Parameters: Takes the listening socket descriptor, a pointer to a sockaddr structure where the address of the connecting client will be stored, and a pointer to the length of the sockaddr structure.
+	Return value: Returns a new socket descriptor representing the accepted connection, or -1 on failure.
+
+htons():
+	Purpose: Converts a 16-bit unsigned integer from host byte order to network byte order.
+	Parameters: Takes a 16-bit unsigned integer.
+	Return value: Returns the converted integer in network byte order.
+
+htonl();
+	Purpose: Converts a 32-bit unsigned integer from host byte order to network byte order.
+	Parameters: Takes a 32-bit unsigned integer.
+	Return value: Returns the converted integer in network byte order.
+
+ntohs();
+	Purpose: Converts a 16-bit unsigned integer from network byte order to host byte order.
+	Parameters: Takes a 16-bit unsigned integer in network byte order.
+	Return value: Returns the converted integer in host byte order.
+
+ntohl():
+	Purpose: Converts a 32-bit unsigned integer from network byte order to host byte order.
+	Parameters: Takes a 32-bit unsigned integer in network byte order.
+	Return value: Returns the converted integer in host byte order.
+
+inet_addr():
+	Purpose: Converts an IPv4 address from dot-decimal notation to binary format.
+	Parameters: Takes a string containing the IPv4 address in dot-decimal notation.
+	Return value: Returns the binary representation of the IPv4 address as a 32-bit unsigned integer in network byte order.
+
+inet_ntoa():
+	Purpose: Converts an IPv4 address from binary format to dot-decimal notation.
+	Parameters: Takes a 32-bit unsigned integer representing the IPv4 address in network byte order.
+	Return value: Returns a string containing the IPv4 address in dot-decimal notation.
+
+send():
+	Purpose: Sends data over a connected socket.
+	Parameters: Takes the socket descriptor, a pointer to the data buffer containing the information to send, the size of the data to send, and optional flags.
+	Return value: Returns the number of bytes sent, or -1 if an error occurs.
+
+recv():
+	Purpose: Receives data from a connected socket.
+	Parameters: Takes the socket descriptor, a pointer to the buffer where the received data will be stored, the maximum size of the buffer, and optional flags.
+	Return value: Returns the number of bytes received, or -1 if an error occurs.
+
+signal():
+	Purpose: Sets up signal handling for specific signals.
+	Parameters: Takes the signal number (such as SIGINT for interrupt signal) and a pointer to a signal handler function (a function that gets executed when the signal is received).
+	Return value: Returns a pointer to the previous signal handler function, or SIG_ERR if an error occurs.
+
+sigaction():
+	Purpose: Sets up signal handling for specific signals with more control than signal().
+	Parameters: Takes the signal number (such as SIGINT for interrupt signal), a pointer to a struct sigaction object containing the signal handling configuration, and optionally a pointer to a struct sigaction object to store the previous signal handling configuration.	
+	Return value: Returns 0 on success, or -1 if an error occurs.
+
+lseek():
+	Purpose: Moves the file pointer associated with a file descriptor to a specific location within a file.
+	Parameters: Takes the file descriptor, an offset (number of bytes to move), and a reference point indicating where the offset is measured from (such as the beginning, current position, or end of the file).
+	Return value: Returns the resulting offset from the beginning of the file if successful, or -1 if an error occurs.
+
+fstat():
+	Purpose: Retrieves information about an open file.
+	Parameters: Takes the file descriptor of the open file and a pointer to a struct stat object where the file information will be stored.
+	Return value: Returns 0 on success, or -1 if an error occurs.
+
+fcntl():
+	Purpose: Performs various operations on open files or file descriptors.
+	Parameters: Takes the file descriptor to operate on, the operation to perform, and additional arguments depending on the operation.
+	Return value: Depends on the specific operation being performed. Generally, returns -1 on error, with specific error conditions indicated by the return value.
+
+poll():
+	Purpose: Monitors multiple file descriptors for events.
+	Parameters: Takes an array of struct pollfd structures, which specify the file descriptors to monitor and the events to wait for, along with a timeout value (or -1 to wait indefinitely).
+	Return value: Returns the number of file descriptors that have events ready, or -1 on error.
