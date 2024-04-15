@@ -8,7 +8,8 @@ OBJ_DIR = obj
 
 INCLUDES = -I$(INC_DIR)
 
-SRC_FILES = 
+SRC_FILES = main.cpp \
+			
 
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
