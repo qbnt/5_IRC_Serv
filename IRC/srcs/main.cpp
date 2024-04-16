@@ -6,12 +6,17 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 09:49:50 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/15 10:12:01 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/04/16 13:09:06 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "IRC.hpp"
 
 int	main(int ac, char** ag){
+	Server	serv;
+
+	while (1){
+		listen(serv.getSocketFd(), 1);
+	}
 	return 0;
 }

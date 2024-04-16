@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Server.hpp                                         :+:      :+:    :+:   */
+/*   Error.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/16 09:46:32 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/16 13:20:50 by mescobar         ###   ########.fr       */
+/*   Created: 2024/04/16 12:40:04 by mescobar          #+#    #+#             */
+/*   Updated: 2024/04/16 13:14:24 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,16 @@
 
 #include "IRC.hpp"
 
-class Server{
-	private:
-		int		_socketFd;
-		int		_clientsReady;
-		time_t	_time;
-		pollfd*	_clientsFd;
-
+class Socket: public std::exception{
 	public:
-		Server();
-		Server(Server const&);
-		~Server();
-		Server&	operator=(Server const&);
+		virtual const char* what() const throw(){
+			return ("Socket() error, -1 returned.");
+		}
+};
 
-		int		getSocketFd() const	{ return (_socketFd);};
+class Listen: public std::exception{
+	public:
+		virtual const char* what() const throw(){
+			return ("Listen() error, -1 returned.");
+		}
 };
