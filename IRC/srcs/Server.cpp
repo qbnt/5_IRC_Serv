@@ -6,11 +6,38 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/17 08:38:33 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/04/17 09:23:59 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
+
+void	Server::_createClientFds(void){
+	if (this->_clientsFd)
+		delete [] this->_clientsFd;
+	this->_clientsFd = new struct pollfd[this->_clientsReady.size() + 1];
+	this->_clientsFd[0].fd = this->_socketFd;
+	this->_clientsFd[0].events = POLLIN;
+	for (size_t i = 0; i < this->_clientsReady.size(); i++){
+		this->_clientsFd[i + 1].fd = this->_clientsReady[i]->getClientFd();
+		this->_clientsFd[i + 1].events = POLLIN;
+	}
+}
+
+void	Server::waitForConnections(){
+	int	socketActivity = poll(this->_clientsFd, this->_clientsReady.size() + 1, -1);
+	if (socketActivity < 0)
+		std::cout << "Error: No socket activity." << std::endl;
+
+	for (size_t i = 0; i < _clientsReady.size(); i++){
+		//if revents == 0 that means that there is no activity
+		if (this->_clientsFd[i].revents == 0)
+			continue;
+		if (this->_clientsFd[i].fd == this->_socketFd)
+			//accepter la connexion
+		//je ne sais pas quoi faire apres lol
+	}
+}
 
 void	Server::IRC(){
 	int 					opt = 1;
@@ -18,24 +45,24 @@ void	Server::IRC(){
 	int						adresslen = sizeof(adress);
 
 	//creation of socket
-	_socketFd = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
 	if (_socketFd == SOCKET_ERROR)
 		throw(Socket());
 	if (setsockopt(_socketFd, SOL_SOCKET, SO_REUSEADDR, (char *)&opt, sizeof(opt) < 0))
 		throw(SocketOptions());
 
-	//type of socket
+	//type of socket and bind to the port
 	adress.sin6_family = AF_INET6;
 	adress.sin6_addr = in6addr_any;
-	adress.sin6_port = DEFAULT_PORT;
+	adress.sin6_port = htons(this->_port);
 	if (bind(this->_socketFd, (struct sockaddr*)&adress, sizeof(adress)) < 0)
 		throw(Bind());
 
-	std::cout << "ircserv connect on port: " << DEFAULT_PORT << std::endl;
-	//listen
+	std::cout << "ircserv connect on port: " << this->_port << std::endl;
+
+	//creation of clientFd vector and listen loop
+	this->_createClientFds();
 	if (listen(_socketFd, 32) < 0)
 		throw(Listen());
-
 	while (1){
 		std::cout << "Server waiting for connections." << std::endl;
 		waitForConnections();
@@ -51,6 +78,9 @@ void	Server::IRC(){
 
 Server::Server(int port, std::string const& password): _port(port), _password(password){
 	_serverName = DEFAULT_SERVER_NAME;
+	_socketFd = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
+	_clientsFd = NULL;
+	_clientsReady = 0;
 	this->IRC();
 }
 
