@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/17 09:23:59 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/04/17 09:30:36 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,7 @@ void	Server::IRC(){
 Server::Server(int port, std::string const& password): _port(port), _password(password){
 	_serverName = DEFAULT_SERVER_NAME;
 	_socketFd = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
-	_clientsFd = NULL;
-	_clientsReady = 0;
+	_clientsFd = NULL;;
 	this->IRC();
 }
 
