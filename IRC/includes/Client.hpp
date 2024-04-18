@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:50:22 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/18 14:01:38 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/04/18 15:32:42 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 typedef typename std::vector<Channel *>::iterator ChanVecIt;
 
 //----------------------------------------------------------------------------||
+
+class Channel;
+class Server;
 
 class Client{
 	private:
@@ -48,6 +51,7 @@ class Client{
 
 		// * Fonctions
 		void	linkSetMsg() const;
+		void	sendMsg(const std::string & msg) const;
 		void	joinChan(Channel *);
 		void	leaveChan(Channel *, bool kicked, std::string const& reason);
 

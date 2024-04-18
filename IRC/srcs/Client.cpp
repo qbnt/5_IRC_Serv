@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:51:13 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/18 14:02:05 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/04/18 15:33:59 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@
 void	Client::linkSetMsg() const {
 
 	// * Msg d'arrivé à afficher sur le serveur
+}
+
+void	Client::sendMsg(const std::string & msg) const {
+
+	// * Fonction de reception de message Serveur
 }
 
 void	Client::joinChan(Channel *chan) {
