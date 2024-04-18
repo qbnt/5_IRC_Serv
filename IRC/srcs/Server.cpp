@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/18 10:08:57 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/04/18 10:50:56 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ void	Server::_createClientFds(void){
 	}
 }
 
+void	Server::addClient(int const socket, std::string const ip, int const port){
+	this->_clientsReady.push_back(new Client(this, socket, ip, port));
+	this->_createClientFds();
+}
+
 void	Server::_acceptConnection(){
 	struct sockaddr_in6	address;
 	socklen_t			addrlen = sizeof(address);
@@ -33,8 +38,8 @@ void	Server::_acceptConnection(){
 		return ;
 	}
 	//we got a connection so we add the client to the list
-	this->addclient();
 	char str_ipv6_addr[INET6_ADDRSTRLEN];
+	this->addClient(newsockfd, inet_ntop(AF_INET6, &address, str_ipv6_addr, INET6_ADDRSTRLEN),);
 	std::cout << "server: connection received from: " << inet_ntop(AF_INET6, &address, str_ipv6_addr, INET6_ADDRSTRLEN) \
 		<< "port: " << ntohs(address.sin6_port) << std::endl;
 }
