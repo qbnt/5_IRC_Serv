@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:50:22 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/17 15:43:04 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/04/18 11:15:28 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ typedef typename std::vector<Channel *>::iterator ChanVecIt;
 class Client{
 	private:
 		// * Utiles
-		int						_fd;
+		int						_socket;
+		int						_port;
+		std::string				_ip;
 		bool					_isConnected;
 
 		// * Infos Serv
@@ -40,7 +42,8 @@ class Client{
 		// Client& operator=(Client const&);
 
 	public:
-		Client(int fd, Server *, std::string const & pseudo);
+		Client(int socket, Server *, std::string const & pseudo);
+		Client(int const socket, std::string const ip, int const port);
 		~Client();
 
 		// * Fonctions
@@ -49,7 +52,7 @@ class Client{
 		void	leaveChan(Channel *, bool kicked, std::string const& reason);
 
 		// * Getters
-		int const						getClientFd() const	{return _fd; };
+		int const						getClientSocket() const	{return _socket; };
 		std::vector<Channel *> const	getUsrChan() const	{return _usrChan; };
 		bool const						isConnected() const	{return _isConnected; };
 

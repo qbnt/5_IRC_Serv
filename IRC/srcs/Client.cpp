@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:51:13 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/17 15:43:41 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/04/18 11:18:55 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,18 @@ void	Client::leaveChan(Channel * chan, bool kicked, std::string const& reason) {
 
 //----------------------------------------------------------------------------||
 
-Client::Client(int fd, Server* serv, std::string const & pseudo)
-				: _fd(fd), _serv(serv), _pseudo(pseudo), _isConnected(false) {
+Client::Client(int socket, Server* serv, std::string const & pseudo)
+				: _socket(socket), _serv(serv), _pseudo(pseudo), _isConnected(false) {
 
-	std::clog << "Client " << pseudo << "crée avec le fd -> " << fd << std::endl;
+	std::clog << "Client " << pseudo << "crée avec le socket -> " << socket << std::endl;
 }
+
+Client::Client(int const socket, std::string const ip, int const port)
+				: _socket(socket), _ip(ip), _port(port), _isConnected(false) {
+
+	std::clog << "Client " << "crée avec le socket -> " << socket << std::endl;
+}
+
 
 Client::~Client(){
 	// TODO : Ajouter la livération de mémoire si besoin
