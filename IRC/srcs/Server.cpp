@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/17 09:30:36 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/04/18 10:08:57 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,22 @@ void	Server::_createClientFds(void){
 	}
 }
 
-void	Server::waitForConnections(){
+void	Server::_acceptConnection(){
+	struct sockaddr_in6	address;
+	socklen_t			addrlen = sizeof(address);
+	int					newsockfd = accept(this->_socketFd, (struct sockaddr*)&address, (socklen_t*)&addrlen);
+	if (newsockfd < 0){
+		std::cout << "Error: couldn't accept connection." << std::endl;
+		return ;
+	}
+	//we got a connection so we add the client to the list
+	this->addclient();
+	char str_ipv6_addr[INET6_ADDRSTRLEN];
+	std::cout << "server: connection received from: " << inet_ntop(AF_INET6, &address, str_ipv6_addr, INET6_ADDRSTRLEN) \
+		<< "port: " << ntohs(address.sin6_port) << std::endl;
+}
+
+void	Server::_waitForConnections(){
 	int	socketActivity = poll(this->_clientsFd, this->_clientsReady.size() + 1, -1);
 	if (socketActivity < 0)
 		std::cout << "Error: No socket activity." << std::endl;
@@ -33,9 +48,11 @@ void	Server::waitForConnections(){
 		//if revents == 0 that means that there is no activity
 		if (this->_clientsFd[i].revents == 0)
 			continue;
-		if (this->_clientsFd[i].fd == this->_socketFd)
-			//accepter la connexion
-		//je ne sais pas quoi faire apres lol
+		if (this->_clientsFd[i].fd == this->_socketFd) //if there is some activity, we'll try to connect to it
+			this->_acceptConnection();
+		//we take the message from the last client
+		Client*	client = this->_clientsReady[i - 1];
+		this->clientMessage();
 	}
 }
 
@@ -65,13 +82,13 @@ void	Server::IRC(){
 		throw(Listen());
 	while (1){
 		std::cout << "Server waiting for connections." << std::endl;
-		waitForConnections();
+		this->_waitForConnections();
 		usleep(100);
 		std::cout << "Server waiting for connections.." << std::endl;
-		waitForConnections();
+		this->_waitForConnections();
 		usleep(100);
 		std::cout << "Server waiting for connections..." << std::endl;
-		waitForConnections();
+		this->_waitForConnections();
 		usleep(100);
 	}
 }

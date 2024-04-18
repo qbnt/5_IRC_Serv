@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:46:32 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/17 09:32:30 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/04/18 09:59:21 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ class Server: public Error{
 		pollfd*					_clientsFd;
 
 		void	_createClientFds(void);
+		void	_acceptConnection(void);
+		void	_waitForConnections(void);
 
 		Server();
 		Server(Server const&);
@@ -35,6 +37,5 @@ class Server: public Error{
 		~Server();
 
 		void	IRC();
-		void	waitForConnections();
 		int		getSocketFd() const	{ return (_socketFd);};
 };
