@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:50:22 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/18 11:15:28 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/04/18 14:01:38 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ class Client{
 
 	public:
 		Client(int socket, Server *, std::string const & pseudo);
-		Client(int const socket, std::string const ip, int const port);
+		Client(Server *, int const socket, std::string const ip, int const port);
 		~Client();
 
 		// * Fonctions

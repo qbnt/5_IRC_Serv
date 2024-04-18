@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:51:13 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/18 11:18:55 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/04/18 14:02:05 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ Client::Client(int socket, Server* serv, std::string const & pseudo)
 	std::clog << "Client " << pseudo << "crée avec le socket -> " << socket << std::endl;
 }
 
-Client::Client(int const socket, std::string const ip, int const port)
-				: _socket(socket), _ip(ip), _port(port), _isConnected(false) {
+Client::Client(Server * serv, int const socket, std::string const ip, int const port)
+				: _serv(serv), _socket(socket), _ip(ip), _port(port), _isConnected(false) {
 
 	std::clog << "Client " << "crée avec le socket -> " << socket << std::endl;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/18 10:50:56 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:03:42 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	Server::_createClientFds(void){
 	this->_clientsFd[0].fd = this->_socketFd;
 	this->_clientsFd[0].events = POLLIN;
 	for (size_t i = 0; i < this->_clientsReady.size(); i++){
-		this->_clientsFd[i + 1].fd = this->_clientsReady[i]->getClientFd();
+		this->_clientsFd[i + 1].fd = this->_clientsReady[i]->getClientSocket();
 		this->_clientsFd[i + 1].events = POLLIN;
 	}
 }
