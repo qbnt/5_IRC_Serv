@@ -6,13 +6,15 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:38:49 by qbanet            #+#    #+#             */
-/*   Updated: 2024/04/18 16:30:10 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/04/19 16:27:24 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 #include "IRC.hpp"
+
+typedef typename std::vector<Client *>::iterator ChanIter;
 
 class Channel {
 	private:
@@ -29,11 +31,6 @@ class Channel {
 		Client *				_admin;
 		std::vector<Client *>	_clients;
 
-		// * Autre
-		// Channel();
-		// Channel(Channel const &);
-		// Channel&	operator=(Channel const &);
-
 	public:
 		Channel(std::string const &name, std::string const &topic, std::string const &password, Client *admin, Server *serv);
 		~Channel();
@@ -47,11 +44,19 @@ class Channel {
 		Server const *				getServ() const		{return _serv; };
 		Client const *				getAdmin() const	{return _admin; };
 		std::vector<Client *> const	getClients() const	{return _clients; };
+		Client const *				getClient(std::string const &);
 
 		// * Setteurs
 		void	setName(std::string const &name)		{_name = name; };
 		void	setTopic(std::string const &topic)		{_topic = topic; };
 		void	setPassword(std::string const &pw)		{_password = pw; };
 		void	setMaxUsr(unsigned int const &nb)		{_maxUsr = nb; };
+
 		void	setAdmin(Client * cl)					{_admin = cl; };
+
+		// * Fonctions
+		bool			isInChan(Client const *);
+		void			addUser(Client *);
+		void			removeUser(Client *, std::string const& reason);
+		unsigned int	getNbrUsr();
 };

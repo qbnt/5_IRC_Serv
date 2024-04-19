@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/16 09:51:13 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/18 15:33:59 by qbanet           ###   ########.fr       */
+/*   Created: 2024/04/19 16:18:07 by qbanet            #+#    #+#             */
+/*   Updated: 2024/04/19 16:27:09 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
 
-//----------------------------------------------------------------------------||
+//--------------------------------Fonctions-----------------------------------||
 
 void	Client::linkSetMsg() const {
 
@@ -26,16 +26,17 @@ void	Client::sendMsg(const std::string & msg) const {
 
 void	Client::joinChan(Channel *chan) {
 
-	// ? Ajoute le client par une fonction de Channel
+	chan->addUser(this);
 	_usrChan.push_back(chan);
-	// ? Oppération de vérif entre Client et Channel
+	if (chan->getNbrUsr() == 1) {
+		chan->setAdmin(this);
+	}
 }
 
 void	Client::leaveChan(Channel * chan, bool kicked, std::string const& reason) {
 
 	if (kicked)
-		// * Supp du user dans le Channel(this, reason);
-
+		chan->removeUser(this, reason);
 	for (ChanVecIt it = _usrChan.begin(); it != _usrChan.end(); ++it) {
         if (*it == chan) {
             _usrChan.erase(it);
@@ -44,23 +45,21 @@ void	Client::leaveChan(Channel * chan, bool kicked, std::string const& reason) {
     }
 }
 
-//----------------------------------------------------------------------------||
+//----------------------------Constructs & Destruct---------------------------||
 
 Client::Client(int socket, Server* serv, std::string const & pseudo)
-				: _socket(socket), _serv(serv), _pseudo(pseudo), _isConnected(false) {
+				: _socket(socket), _serv(serv), _pseudo(pseudo), _passwordOk(false) {
 
 	std::clog << "Client " << pseudo << "crée avec le socket -> " << socket << std::endl;
 }
 
 Client::Client(Server * serv, int const socket, std::string const ip, int const port)
-				: _serv(serv), _socket(socket), _ip(ip), _port(port), _isConnected(false) {
+				: _serv(serv), _socket(socket), _ip(ip), _port(port), _passwordOk(false) {
 
 	std::clog << "Client " << "crée avec le socket -> " << socket << std::endl;
 }
 
 
 Client::~Client(){
-	// TODO : Ajouter la livération de mémoire si besoin
+	// TODO: Ajouter la libération de mémoire si besoin
 }
-
-//----------------------------------------------------------------------------||

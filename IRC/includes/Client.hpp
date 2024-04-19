@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:50:22 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/18 15:32:42 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/04/19 16:21:57 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ class Client{
 		int						_socket;
 		int						_port;
 		std::string				_ip;
-		bool					_isConnected;
+		bool					_passwordOk;
 
 		// * Infos Serv
 		Server *				_serv;
@@ -39,10 +39,6 @@ class Client{
 		std::string				_password;
 		std::string				_username;
 		std::string				_fullname;
-
-		// Client();
-		// Client(Client const&);
-		// Client& operator=(Client const&);
 
 	public:
 		Client(int socket, Server *, std::string const & pseudo);
@@ -58,7 +54,7 @@ class Client{
 		// * Getters
 		int const						getClientSocket() const	{return _socket; };
 		std::vector<Channel *> const	getUsrChan() const	{return _usrChan; };
-		bool const						isConnected() const	{return _isConnected; };
+		bool const						isConnected() const	{return _passwordOk; };
 
 		std::string const &				getPseudo() const	{return _pseudo; };
 		std::string const &				getPassword() const	{return _password; };
