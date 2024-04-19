@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:46:32 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/18 10:48:45 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/04/19 18:25:44 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ class Server: public Error{
 		void	_createClientFds(void);
 		void	_acceptConnection(void);
 		void	_waitForConnections(void);
-		void	_clientMessage(void);
+		void	_clientMessage(Client*);
 
 		Server();
 		Server(Server const&);

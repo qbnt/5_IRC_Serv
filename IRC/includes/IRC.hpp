@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IRC.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 09:49:14 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/17 14:41:37 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/04/19 18:33:32 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # include "Client.hpp"
 # include "Error.hpp"
 
+# define BUFFER_SIZE 8192
 # define SOCKET_ERROR -1
 # define DEFAULT_PORT 6667
 # define DEFAULT_SERVER_NAME "irc.42.fr"

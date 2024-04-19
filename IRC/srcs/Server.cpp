@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/18 14:03:42 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/04/19 18:53:14 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,6 @@ void	Server::_createClientFds(void){
 	}
 }
 
-void	Server::addClient(int const socket, std::string const ip, int const port){
-	this->_clientsReady.push_back(new Client(this, socket, ip, port));
-	this->_createClientFds();
-}
-
 void	Server::_acceptConnection(){
 	struct sockaddr_in6	address;
 	socklen_t			addrlen = sizeof(address);
@@ -44,6 +39,27 @@ void	Server::_acceptConnection(){
 		<< "port: " << ntohs(address.sin6_port) << std::endl;
 }
 
+void	Server::_clientMessage(Client*	client){
+	char buff[BUFFER_SIZE + 1];
+	while (true){
+		int	res = recv(client->getClientSocket(), buff, BUFFER_SIZE + 1, NULL);
+		if (res < 0){
+			std::cout << "Error: recv() from client: " << client->getClientSocket();
+			this->deleteClient(client->getClientSocket());
+			break;
+		}
+		if (!res){
+			this->deleteClient(client->getClientSocket());
+			break;
+		}
+		else{
+			buff[res] = '\0';
+			std::string msg = buff;
+			// Je ne sais pas quoi faire une fois j'obtiens le message du client
+		}
+	}
+}
+
 void	Server::_waitForConnections(){
 	int	socketActivity = poll(this->_clientsFd, this->_clientsReady.size() + 1, -1);
 	if (socketActivity < 0)
@@ -53,11 +69,11 @@ void	Server::_waitForConnections(){
 		//if revents == 0 that means that there is no activity
 		if (this->_clientsFd[i].revents == 0)
 			continue;
-		if (this->_clientsFd[i].fd == this->_socketFd) //if there is some activity, we'll try to connect to it
+		if (this->_clientsFd[i].fd == this->_socketFd) //if there is some activity, we treat it as a connection
 			this->_acceptConnection();
 		//we take the message from the last client
 		Client*	client = this->_clientsReady[i - 1];
-		this->clientMessage();
+		this->_clientMessage(client);
 	}
 }
 
@@ -85,7 +101,7 @@ void	Server::IRC(){
 	this->_createClientFds();
 	if (listen(_socketFd, 32) < 0)
 		throw(Listen());
-	while (1){
+	while (true){
 		std::cout << "Server waiting for connections." << std::endl;
 		this->_waitForConnections();
 		usleep(100);
@@ -96,6 +112,11 @@ void	Server::IRC(){
 		this->_waitForConnections();
 		usleep(100);
 	}
+}
+
+void	Server::addClient(int const socket, std::string const ip, int const port){
+	this->_clientsReady.push_back(new Client(this, socket, ip, port));
+	this->_createClientFds();
 }
 
 Server::Server(int port, std::string const& password): _port(port), _password(password){
@@ -113,6 +134,7 @@ Server::Server(Server const& cp){
 }
 
 Server::~Server(){
+	// TODO: Ajouter la libération de mémoire si besoin
 	close(_socketFd);
 }
 
