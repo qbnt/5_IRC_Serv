@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 09:49:14 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/19 18:33:32 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/04/23 11:34:06 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,3 +38,5 @@
 # define SOCKET_ERROR -1
 # define DEFAULT_PORT 6667
 # define DEFAULT_SERVER_NAME "irc.42.fr"
+
+std::vector<std::string> ft_split(std::string, char);

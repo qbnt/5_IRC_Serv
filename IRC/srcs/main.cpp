@@ -6,11 +6,25 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 09:49:50 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/17 08:09:30 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/04/23 11:33:29 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "IRC.hpp"
+
+std::vector<std::string>	ft_split(std::string str, char c){
+	std::vector<std::string>	cmd;
+	int j = 0;
+	if (str.empty())
+		cmd.push_back("");
+	for (int i = 0; i < str.size(); i++){
+		while (str[i] && str[i] != c)
+			i++;
+		cmd.push_back(str.substr(j, i));
+		j += i;
+	}
+	return (cmd);
+}
 
 int	allDigits(char *ag){
 	for (int i = 0; i < strlen(ag); i++)

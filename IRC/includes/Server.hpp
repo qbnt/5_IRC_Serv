@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:46:32 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/19 18:25:44 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/04/23 11:39:21 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ class Server: public Error{
 		void	_acceptConnection(void);
 		void	_waitForConnections(void);
 		void	_clientMessage(Client*);
+		void	_parsMessage(std::string, Client*);
 
 		Server();
 		Server(Server const&);

@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/19 18:53:14 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/04/23 12:28:28 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,17 @@ void	Server::_acceptConnection(){
 		<< "port: " << ntohs(address.sin6_port) << std::endl;
 }
 
+void	Server::_parsMessage(std::string msg, Client* client){
+	std::vector<std::string> cmd;
+	if (msg.find('\n') != 0)
+		cmd = ft_split(msg, 'c');
+	else
+		cmd.push_back(msg);
+	for (std::vector<std::string>::iterator it = cmd.begin(); it != cmd.end(); it++){
+		_handle.command(client, *it);
+	}
+}
+
 void	Server::_clientMessage(Client*	client){
 	char buff[BUFFER_SIZE + 1];
 	while (true){
@@ -55,7 +66,7 @@ void	Server::_clientMessage(Client*	client){
 		else{
 			buff[res] = '\0';
 			std::string msg = buff;
-			// Je ne sais pas quoi faire une fois j'obtiens le message du client
+			_parsMessage(msg, client);
 		}
 	}
 }
@@ -95,7 +106,7 @@ void	Server::IRC(){
 	if (bind(this->_socketFd, (struct sockaddr*)&adress, sizeof(adress)) < 0)
 		throw(Bind());
 
-	std::cout << "ircserv connect on port: " << this->_port << std::endl;
+	std::cout << "ircserv connected on port: " << this->_port << std::endl;
 
 	//creation of clientFd vector and listen loop
 	this->_createClientFds();
@@ -134,7 +145,7 @@ Server::Server(Server const& cp){
 }
 
 Server::~Server(){
-	// TODO: Ajouter la libération de mémoire si besoin
+	// TODO: Ajouter la libération de mémoire si besoin;
 	close(_socketFd);
 }
 
