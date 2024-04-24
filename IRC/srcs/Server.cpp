@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/23 12:28:28 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/04/24 12:26:29 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	Server::_acceptConnection(){
 	}
 	//we got a connection so we add the client to the list
 	char str_ipv6_addr[INET6_ADDRSTRLEN];
-	this->addClient(newsockfd, inet_ntop(AF_INET6, &address, str_ipv6_addr, INET6_ADDRSTRLEN),);
+	this->addClient(newsockfd, inet_ntop(AF_INET6, &address, str_ipv6_addr, INET6_ADDRSTRLEN), DEFAULT_PORT);
 	std::cout << "server: connection received from: " << inet_ntop(AF_INET6, &address, str_ipv6_addr, INET6_ADDRSTRLEN) \
 		<< "port: " << ntohs(address.sin6_port) << std::endl;
 }
@@ -46,7 +46,7 @@ void	Server::_parsMessage(std::string msg, Client* client){
 	else
 		cmd.push_back(msg);
 	for (std::vector<std::string>::iterator it = cmd.begin(); it != cmd.end(); it++){
-		_handle.command(client, *it);
+		_commands.command(client, *it);
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IRC.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 09:49:14 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/23 11:34:06 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/04/24 12:03:37 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # include "Channel.hpp"
 # include "Client.hpp"
 # include "Error.hpp"
+# include "Commands.hpp"
 
 # define BUFFER_SIZE 8192
 # define SOCKET_ERROR -1
