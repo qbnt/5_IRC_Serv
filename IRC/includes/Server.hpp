@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:46:32 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/24 12:02:00 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/04/25 09:43:42 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ class Server: public Error{
 		int						_socketFd;
 		std::vector<Client *>	_clientsReady;
 		pollfd*					_clientsFd;
-		Commands				_commands;
+		CommandsUse				_commands;
 
 		void	_createClientFds(void);
 		void	_acceptConnection(void);
