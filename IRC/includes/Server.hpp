@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:46:32 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/27 19:39:59 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/04/27 19:51:50 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,22 @@ class Server: public Error{
 		ssize_t	send(std::string, int) const;
 		void	addClient(int const, std::string const, int const);
 		void	deleteClient(int);
-		int		getSocketFd() const	{ return (_socketFd);};
+
+		//setters:
+		void	setSocketFd(int cp)							{_socketFd = cp;};
+		void	setPort(int cp)								{_port = cp;};
+		void	setPassword(std::string cp)					{_password = cp;};
+		void	setServerName(std::string cp)				{_serverName = cp;};
+		void	setClientsVector(std::vector<Client*> cp)	{_clientsReady = cp;};
+		void	setClientsFd(pollfd* cp)					{_clientsFd = cp;};
+		void	setCommands(CommandsUse cp)					{_commands = cp;};
+
+		//getters:
+		int						getSocketFd()		const	{return (_socketFd);};
+		int						getPort()			const	{return (_port);};
+		std::string				getPassword()		const	{return (_password);};
+		std::string				getServerName() 	const	{return (_serverName);};
+		std::vector<Client*>	getClientsVector()	const	{return (_clientsReady);};
+		pollfd*					getClientsFd()		const	{return (_clientsFd);};
+		CommandsUse				getCommands()		const	{return (_commands);};
 };
