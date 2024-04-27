@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/24 12:26:29 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/04/27 19:42:54 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,4 +154,13 @@ Server& Server::operator=(Server const& cp){
 		_socketFd = cp._socketFd;
 	}
 	return (*this);
+}
+
+ssize_t	Server::send(std::string message, int fd) const{
+	if (message[message.size() - 1] != '\n')
+		message += "\n";
+	ssize_t send = ::send(fd, message.c_str(), message.length(), 0);
+	if (send != (ssize_t)message.length())
+		std::cout << "Message sent incomplete" << std::endl;
+	return (send);
 }

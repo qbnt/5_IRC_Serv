@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:46:32 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/25 09:43:42 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/04/27 19:39:59 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ class Server: public Error{
 		~Server();
 
 		void	IRC();
+		ssize_t	send(std::string, int) const;
 		void	addClient(int const, std::string const, int const);
 		void	deleteClient(int);
 		int		getSocketFd() const	{ return (_socketFd);};
