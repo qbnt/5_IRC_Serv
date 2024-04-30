@@ -6,13 +6,24 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 15:56:02 by qbanet            #+#    #+#             */
-/*   Updated: 2024/04/19 16:29:47 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/04/23 11:21:50 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Channel.hpp"
 
 //--------------------------------Fonctions-----------------------------------||
+
+void	Channel::addUser(Client *usr) {
+
+	_clients.push_back(usr);
+	usr->joinChan(this);
+}
+
+void	Channel::removeUser(Client *usr, std::string const& reason) {
+
+	usr->leaveChan(this, false, reason);
+}
 
 bool	Channel::isInChan(Client const * usr) {
 
@@ -23,16 +34,18 @@ bool	Channel::isInChan(Client const * usr) {
 	return false;
 }
 
-void	Channel::addUser(Client *usr) {
-	_clients.push_back(usr);
-}
-
-void	Channel::removeUser(Client *usr, std::string const& reason) {
-	
-}
-
 unsigned int	Channel::getNbrUsr() {
 	return _clients.size();
+}
+
+std::vector<std::string> const	Channel::getAllNickname() {
+
+	std::vector<std::string>	allNickname;
+
+	for (ChanIter it = _clients.begin(); it != _clients.end(); it++) {
+		allNickname.push_back((*it)->getNickname());
+	}
+	return allNickname;
 }
 
 //---------------------------Getteurs & Setteurs------------------------------||
@@ -40,7 +53,7 @@ unsigned int	Channel::getNbrUsr() {
 Client const *	Channel::getClient(std::string const &pseudo) {
 
 	for (ChanIter it = _clients.begin(); it != _clients.end(); it ++) {
-		if ((*it)->getPseudo() == pseudo)
+		if ((*it)->getNickname() == pseudo)
 			return *it;
 	}
 	return NULL;
