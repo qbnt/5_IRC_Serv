@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:38:49 by qbanet            #+#    #+#             */
-/*   Updated: 2024/04/19 16:27:24 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/04/23 11:35:20 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,19 @@ class Channel {
 		// * Clients du channel
 		Client *				_admin;
 		std::vector<Client *>	_clients;
+		std::vector<Client *>	_op;
 
 	public:
 		Channel(std::string const &name, std::string const &topic, std::string const &password, Client *admin, Server *serv);
 		~Channel();
+
+		// * Fonctions
+		void							addUser(Client *);
+		void							removeUser(Client *, std::string const& reason);
+
+		bool							isInChan(Client const *);
+		unsigned int					getNbrUsr();
+		std::vector<std::string> const	getAllNickname();
 
 		// * Getteurs
 		std::string const &			getName() const		{return _name; };
@@ -44,6 +53,7 @@ class Channel {
 		Server const *				getServ() const		{return _serv; };
 		Client const *				getAdmin() const	{return _admin; };
 		std::vector<Client *> const	getClients() const	{return _clients; };
+		std::vector<Client *> const	getOp()	const		{return _op; };
 		Client const *				getClient(std::string const &);
 
 		// * Setteurs
@@ -53,10 +63,5 @@ class Channel {
 		void	setMaxUsr(unsigned int const &nb)		{_maxUsr = nb; };
 
 		void	setAdmin(Client * cl)					{_admin = cl; };
-
-		// * Fonctions
-		bool			isInChan(Client const *);
-		void			addUser(Client *);
-		void			removeUser(Client *, std::string const& reason);
-		unsigned int	getNbrUsr();
+		void	setNewOp(Client * cl)					{_op.push_back(cl); };
 };

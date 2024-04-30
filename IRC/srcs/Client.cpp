@@ -6,13 +6,20 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 16:18:07 by qbanet            #+#    #+#             */
-/*   Updated: 2024/04/19 16:27:09 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/04/23 11:36:37 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
 
 //--------------------------------Fonctions-----------------------------------||
+
+bool	Client::isConnected() const {
+
+	if (getNickname().empty() || getUsername().empty() || !isPasswordOK())
+		return false;
+	return true;
+}
 
 void	Client::linkSetMsg() const {
 
@@ -27,9 +34,9 @@ void	Client::sendMsg(const std::string & msg) const {
 void	Client::joinChan(Channel *chan) {
 
 	chan->addUser(this);
-	_usrChan.push_back(chan);
 	if (chan->getNbrUsr() == 1) {
 		chan->setAdmin(this);
+		chan->setNewOp(this);
 	}
 }
 
@@ -48,7 +55,7 @@ void	Client::leaveChan(Channel * chan, bool kicked, std::string const& reason) {
 //----------------------------Constructs & Destruct---------------------------||
 
 Client::Client(int socket, Server* serv, std::string const & pseudo)
-				: _socket(socket), _serv(serv), _pseudo(pseudo), _passwordOk(false) {
+				: _socket(socket), _serv(serv), _nickname(pseudo), _passwordOk(false) {
 
 	std::clog << "Client " << pseudo << "crée avec le socket -> " << socket << std::endl;
 }
