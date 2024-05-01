@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IRC.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 09:49:14 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/25 09:43:58 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/01 13:34:14 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,14 @@
 # include "Error.hpp"
 # include "Command.hpp"
 # include "CommandsUse.hpp"
+# include "rpl.hpp"
 
-# define BUFFER_SIZE 8192
-# define SOCKET_ERROR -1
-# define DEFAULT_PORT 6667
-# define DEFAULT_SERVER_NAME "irc.42.fr"
+# define BUFFER_SIZE			8192
+# define SOCKET_ERROR			-1
+# define DEFAULT_PORT			6667
+# define DEFAULT_SERVER_NAME	"irc.42.fr"
+# define VERSION				"0.42"
+# define USERMODES				""
+# define CHANNELMODES			"tikol"
 
 std::vector<std::string> ft_split(std::string, char);
