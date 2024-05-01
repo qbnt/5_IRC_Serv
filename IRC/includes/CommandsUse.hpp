@@ -12,4 +12,6 @@ class CommandsUse{
 	public:
 		CommandsUse(Server*	server);
 		~CommandsUse();
+
+		void	handle(Client*, std::string const&);
 };

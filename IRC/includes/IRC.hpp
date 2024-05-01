@@ -24,6 +24,8 @@
 # include "csignal"
 # include "signal.h"
 # include "sys/stat.h"
+# include "numeric"
+# include "sstream"
 # include "fcntl.h"
 # include "poll.h"
 # include "vector"
