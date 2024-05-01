@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 16:18:07 by qbanet            #+#    #+#             */
-/*   Updated: 2024/05/01 07:14:46 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/01 17:11:20 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,66 @@
 
 //--------------------------------Fonctions-----------------------------------||
 
-bool	Client::isConnected() const {
+bool const	Client::isOk() const {
 
-	if (getNickname().empty() || getUsername().empty() || !isPasswordOK())
+	if (getNickname().empty() || getUsername().empty() || getRealname().empty() || !isPasswordOK())
 		return false;
 	return true;
 }
 
-void	Client::linkSetMsg() const {
+void	Client::send(const std::string & msg) const {
 
-	// * Msg d'arrivé à afficher sur le serveur
+	_serv->send(msg, getClientSocket());
 }
 
 void	Client::sendMsg(const std::string & msg) const {
 
-	// * Fonction de reception de message Serveur
+	this->send(":" + _serv->getServerName() + " " + msg);
+}
+
+std::string const	Client::getPref() const {
+
+	if (getNickname().empty())
+		return "*";
+	return _nickname + (_username.empty() ? "" : "!" + _username) + (_hostname.empty() ? "" : "@" + _hostname);
+}
+
+void	Client::linkSetMsg() const {
+
+	if(!isOk())
+		return ;
+	sendMsg(RPL_WELCOME(getNickname(), getHostname()));
+	sendMsg(RPL_YOURHOST(getNickname(), _serv->getServerName(), VERSION));
+	sendMsg(RPL_CREATED(getNickname(), _serv->_getStartTime()));
+	sendMsg(RPL_MYINFO(getNickname(), _serv->getServerName(), VERSION, USERMODES, CHANNELMODES));
+
+	sendMsg(RPL_MOTDSTART(getNickname(), _serv->getServerName()));
+	sendMsg(RPL_MOTD(getNickname(), " :- #####################################"));
+	sendMsg(RPL_MOTD(getNickname(), " :- # Bienvenue sur notre serveur IRC ! #"));
+	sendMsg(RPL_MOTD(getNickname(), " :- #####################################"));
+	sendMsg(RPL_ENDOFMOTD(getNickname()));
 }
 
 void	Client::joinChan(Channel *chan) {
 
 	chan->addUser(this);
+	_usrChan.push_back(chan);
 	if (chan->getNbrUsr() == 1) {
 		chan->setAdmin(this);
 		chan->setNewOp(this);
 	}
+
+	std::string users;
+	std::vector<std::string> nicknames = chan->getAllNickname();
+	for (std::vector<std::string>::iterator it = nicknames.begin(); it != nicknames.end(); it ++) {
+		users += (*it + " ");
+	}
+
+	chan->diff(RPL_JOIN(getPref(), chan->getName()));
+
+	sendMsg(RPL_NOTOPIC(getNickname(), chan->getName()));
+	sendMsg(RPL_NAMREPLY(getNickname(), chan->getName(), users));
+	sendMsg(RPL_ENDOFNAMES(getNickname(), chan->getName()));
 }
 
 void	Client::leaveChan(Channel * chan, bool kicked, std::string const& reason) {
@@ -54,14 +90,8 @@ void	Client::leaveChan(Channel * chan, bool kicked, std::string const& reason) {
 
 //----------------------------Constructs & Destruct---------------------------||
 
-Client::Client(int socket, Server* serv, std::string const & pseudo)
-				: _socket(socket), _serv(serv), _nickname(pseudo), _passwordOk(false) {
-
-	std::clog << "Client " << pseudo << "crée avec le socket -> " << socket << std::endl;
-}
-
-Client::Client(Server * serv, int const socket, std::string const ip, int const port)
-				: _serv(serv), _socket(socket), _ip(ip), _port(port), _passwordOk(false) {
+Client::Client(Server * serv, int const socket, std::string const &ip, int const port)
+				: _serv(serv), _socket(socket), _hostname(ip), _port(port), _passwordOk(false) {
 
 	std::clog << "Client " << "crée avec le socket -> " << socket << std::endl;
 }
