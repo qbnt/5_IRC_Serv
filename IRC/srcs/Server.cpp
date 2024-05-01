@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/25 13:52:19 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/01 07:06:29 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,7 @@ void	Server::_parsMessage(std::string msg, Client* client){
 	}
 }
 
-void	Server::sendMessage(){}
-
-void	Server::_recvMessage(Client*	client){
+void	Server::_clientMessage(Client*	client){
 	char buff[BUFFER_SIZE + 1];
 	while (true){
 		int	res = recv(client->getClientSocket(), buff, BUFFER_SIZE + 1, NULL);
@@ -86,7 +84,7 @@ void	Server::_waitForConnections(){
 			this->_acceptConnection();
 		//we take the message from the last client
 		Client*	client = this->_clientsReady[i - 1];
-		this->_recvMessage(client);
+		this->_clientMessage(client);
 	}
 }
 
@@ -156,4 +154,13 @@ Server& Server::operator=(Server const& cp){
 		_socketFd = cp._socketFd;
 	}
 	return (*this);
+}
+
+ssize_t	Server::send(std::string message, int fd) const{
+	if (message[message.size() - 1] != '\n')
+		message += "\n";
+	ssize_t send = ::send(fd, message.c_str(), message.length(), 0);
+	if (send != (ssize_t)message.length())
+		std::cout << "Message sent incomplete" << std::endl;
+	return (send);
 }
