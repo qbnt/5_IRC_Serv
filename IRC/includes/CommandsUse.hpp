@@ -10,6 +10,9 @@ class CommandsUse{
 		Server*							_server;
 		std::map<std::string, Command*>	_comMap;
 	public:
+		CommandsUse();
 		CommandsUse(Server*	server);
 		~CommandsUse();
+
+		void	handle(Client*, std::string);
 };

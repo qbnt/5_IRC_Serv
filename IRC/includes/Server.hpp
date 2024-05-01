@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:46:32 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/25 09:43:42 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/04/29 10:21:21 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ class Server: public Error{
 		void	_createClientFds(void);
 		void	_acceptConnection(void);
 		void	_waitForConnections(void);
-		void	_clientMessage(Client*);
+		void	_recvMessage(Client*);
 		void	_parsMessage(std::string, Client*);
 
 		Server();
@@ -41,6 +41,7 @@ class Server: public Error{
 		~Server();
 
 		void	IRC();
+		void	sendMessage();
 		void	addClient(int const, std::string const, int const);
 		void	deleteClient(int);
 		int		getSocketFd() const	{ return (_socketFd);};

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/24 12:26:29 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/04/25 13:52:19 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,9 @@ void	Server::_parsMessage(std::string msg, Client* client){
 	}
 }
 
-void	Server::_clientMessage(Client*	client){
+void	Server::sendMessage(){}
+
+void	Server::_recvMessage(Client*	client){
 	char buff[BUFFER_SIZE + 1];
 	while (true){
 		int	res = recv(client->getClientSocket(), buff, BUFFER_SIZE + 1, NULL);
@@ -84,7 +86,7 @@ void	Server::_waitForConnections(){
 			this->_acceptConnection();
 		//we take the message from the last client
 		Client*	client = this->_clientsReady[i - 1];
-		this->_clientMessage(client);
+		this->_recvMessage(client);
 	}
 }
 
