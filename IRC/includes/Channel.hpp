@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:38:49 by qbanet            #+#    #+#             */
-/*   Updated: 2024/04/23 11:35:20 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/01 17:26:25 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,13 @@ class Channel {
 		// * Fonctions
 		void							addUser(Client *);
 		void							removeUser(Client *, std::string const& reason);
+		void							removeOp(Client const *);
+		void							diff(const std::string &);
 
 		bool							isInChan(Client const *);
+		bool							isOp(Client const *);
 		unsigned int					getNbrUsr();
-		std::vector<std::string> const	getAllNickname();
+		std::vector<std::string>		getAllNickname();
 
 		// * Getteurs
 		std::string const &			getName() const		{return _name; };
