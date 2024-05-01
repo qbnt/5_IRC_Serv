@@ -1,8 +1,5 @@
 #include "CommandsUse.hpp"
 
-CommandsUse::CommandsUse(){
-}
-
 CommandsUse::CommandsUse(Server* serv): _server(serv){
 	_comMap["NoticeCommand"] = new NoticeCommand(serv);
 	_comMap["PrivMsgComand"] = new PrivMsgCommand(serv);
@@ -28,5 +25,23 @@ CommandsUse::~CommandsUse(){
 	}
 }
 
-void	CommandsUse::handle(Client* client, std::string command){
+void	CommandsUse::handle(Client* client, std::string const& message){
+	std::stringstream	sstring(message);
+	std::string			SplitCommand;
+
+	while (std::getline(sstring, SplitCommand)){
+		if (SplitCommand.length() == '\r')
+			SplitCommand = SplitCommand.substr(0, SplitCommand.length() - 1);
+		else
+			SplitCommand = SplitCommand.substr(0, SplitCommand.length());
+		std::string	command = SplitCommand.substr(0, SplitCommand.find(" "));
+		Command*	ccomand = _comMap.at(command);
+		std::vector<std::string> commandArguments;
+		std::stringstream	ss(SplitCommand.substr(command.length(), SplitCommand.length()));
+		std::string buff;
+		while (ss >> buff){
+			commandArguments.push_back(buff);
+		}
+		ccomand->execute(client, commandArguments);
+	}
 }

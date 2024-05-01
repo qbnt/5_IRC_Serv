@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 16:18:07 by qbanet            #+#    #+#             */
-/*   Updated: 2024/05/01 07:06:58 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/01 07:14:46 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ Client::Client(int socket, Server* serv, std::string const & pseudo)
 }
 
 Client::Client(Server * serv, int const socket, std::string const ip, int const port)
-				: _serv(serv), _socket(socket), _ip(ip), _port(p∑∑∑ort), _passwordOk(false) {
+				: _serv(serv), _socket(socket), _ip(ip), _port(port), _passwordOk(false) {
 
 	std::clog << "Client " << "crée avec le socket -> " << socket << std::endl;
 }
