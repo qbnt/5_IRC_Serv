@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:38:49 by qbanet            #+#    #+#             */
-/*   Updated: 2024/05/03 12:23:49 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/03 12:33:45 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 #include "IRC.hpp"
 
 typedef typename std::vector<Client *>::iterator ChanIter;
+
+class Client;
+class Server;
 
 class Channel {
 	private:

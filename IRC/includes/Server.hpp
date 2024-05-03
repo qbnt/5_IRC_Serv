@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:46:32 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/03 12:00:16 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/03 12:40:16 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 class Client;
 class Server: public Error{
 	private:
-	
+
 		int						_port;
 		std::string				_password;
 		std::string 			_serverName;

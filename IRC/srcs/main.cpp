@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 09:49:50 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/03 12:10:31 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/03 12:34:22 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ std::string	timeString(){
 	time_t	rawtime;
 	struct	tm*timeinfo;
 	char	buff[80];
-	
+
 	time(&rawtime);
 	timeinfo = localtime(&rawtime);
 	strftime(buff, sizeof(buff), "%c", timeinfo);

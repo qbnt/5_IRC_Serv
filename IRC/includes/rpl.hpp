@@ -6,12 +6,13 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:57:16 by qbanet            #+#    #+#             */
-/*   Updated: 2024/04/30 15:09:32 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/03 12:32:53 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
+#include "IRC.hpp"
 #include <iostream>
 
 //ERROR REPLIES

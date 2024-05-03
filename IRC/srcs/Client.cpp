@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 16:18:07 by qbanet            #+#    #+#             */
-/*   Updated: 2024/05/03 12:27:42 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/03 12:40:58 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 //--------------------------------Fonctions-----------------------------------||
 
-bool const	Client::isOk() const {
+bool	Client::isOk() const {
 
 	if (getNickname().empty() || getUsername().empty() || getRealname().empty() || !isPasswordOK())
 		return false;
@@ -44,7 +44,7 @@ void	Client::linkSetMsg() const {
 		return ;
 	sendMsg(RPL_WELCOME(getNickname(), getHostname()));
 	sendMsg(RPL_YOURHOST(getNickname(), _serv->getServerName(), VERSION));
-	sendMsg(RPL_CREATED(getNickname(), _startTime));
+	sendMsg(RPL_CREATED(getNickname(), _serv->getStartTime()));
 	sendMsg(RPL_MYINFO(getNickname(), _serv->getServerName(), VERSION, USERMODES, CHANNELMODES));
 
 	sendMsg(RPL_MOTDSTART(getNickname(), _serv->getServerName()));

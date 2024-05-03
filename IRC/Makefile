@@ -9,10 +9,13 @@ OBJ_DIR = obj
 INCLUDES = -I$(INC_DIR)
 
 SRC_FILES = main.cpp \
-			
+			Channel.cpp \
+			Client.cpp \
+			CommandsUse.cpp \
+			Server.cpp
 
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
-OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+OBJ = $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
 # Colors
 RESET = \033[0m
@@ -32,7 +35,7 @@ $(NAME): $(OBJ)
 	@echo "$(GREEN)Compilation successful!$(RESET)"
 	@sleep 0
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 	@echo "$(BLUE)Compiling: $<$(RESET)"

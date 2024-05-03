@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:50:22 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/03 11:55:08 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/03 12:42:00 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ class Client{
 		~Client();
 
 		// * Fonctions
-		bool const			isOk() const;
+		bool				isOk() const;
 		void				send(const std::string &) const;
 		void				sendMsg(const std::string & msg) const;
 		std::string const	getPref() const;
@@ -54,10 +54,10 @@ class Client{
 		void	leaveChan(Channel *, bool kicked, std::string const& reason);
 
 		// * Getters
-		int const						getClientSocket() const	{return _socket; };
+		int								getClientSocket() const	{return _socket; };
 		std::vector<Channel *> const	getUsrChan() const		{return _usrChan; };
 		std::string const				getHostname() const		{return _hostname; };
-		bool const						isPasswordOK() const	{return _passwordOk; };
+		bool							isPasswordOK() const	{return _passwordOk; };
 
 		std::string const &				getNickname() const	{return _nickname; };
 		std::string const & 			getUsername() const	{return _username; };
