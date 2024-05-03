@@ -1,5 +1,7 @@
 #include "CommandsUse.hpp"
 
+CommandsUse::CommandsUse(){}
+
 CommandsUse::CommandsUse(Server* serv): _server(serv){
 	_comMap["NoticeCommand"] = new NoticeCommand(serv);
 	_comMap["PrivMsgComand"] = new PrivMsgCommand(serv);
@@ -35,13 +37,21 @@ void	CommandsUse::handle(Client* client, std::string const& message){
 		else
 			SplitCommand = SplitCommand.substr(0, SplitCommand.length());
 		std::string	command = SplitCommand.substr(0, SplitCommand.find(" "));
-		Command*	ccomand = _comMap.at(command);
-		std::vector<std::string> commandArguments;
-		std::stringstream	ss(SplitCommand.substr(command.length(), SplitCommand.length()));
-		std::string buff;
-		while (ss >> buff){
-			commandArguments.push_back(buff);
+		try{
+			Command*	ccomand = _comMap.at(command);
+			std::vector<std::string> commandArguments;
+			std::stringstream	ss(SplitCommand.substr(command.length(), SplitCommand.length()));
+			std::string buff;
+			while (ss >> buff){
+				commandArguments.push_back(buff);
+			}
+			if (ccomand->getAuth() && !client->isOk())
+				return ;
+			ccomand->execute(client, commandArguments);
 		}
-		ccomand->execute(client, commandArguments);
+		catch(const std::out_of_range &e){
+			if (command != "CAP")
+				std::cout << "Unkown command: " << command <<  " client: " << client << std::endl;  
+		}
 	}
 }

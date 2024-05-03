@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/01 07:06:29 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/03 12:08:43 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	Server::_parsMessage(std::string msg, Client* client){
 	else
 		cmd.push_back(msg);
 	for (std::vector<std::string>::iterator it = cmd.begin(); it != cmd.end(); it++){
-		_commands.command(client, *it);
+		_commands.handle(client, *it);
 	}
 }
 
@@ -134,14 +134,8 @@ Server::Server(int port, std::string const& password): _port(port), _password(pa
 	_serverName = DEFAULT_SERVER_NAME;
 	_socketFd = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
 	_clientsFd = NULL;;
+	_startTime = timeString();
 	this->IRC();
-}
-
-Server::Server(){
-}
-
-Server::Server(Server const& cp){
-	*this = cp;
 }
 
 Server::~Server(){

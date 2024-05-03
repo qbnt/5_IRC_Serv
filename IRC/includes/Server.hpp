@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:46:32 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/01 07:03:29 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/03 12:00:16 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,14 @@ class Server: public Error{
 		std::vector<Client *>	_clientsReady;
 		pollfd*					_clientsFd;
 		CommandsUse				_commands;
+		std::string				_startTime;
 
 		void	_createClientFds(void);
 		void	_acceptConnection(void);
 		void	_waitForConnections(void);
 		void	_recvMessage(Client*);
 		void	_parsMessage(std::string, Client*);
+		void	_clientMessage(Client*);
 
 		Server();
 		Server(Server const&);
@@ -55,6 +57,7 @@ class Server: public Error{
 		void	setCommands(CommandsUse cp)					{_commands = cp;};
 
 		//getters:
+		std::string				getStartTime()		const	{return (_startTime);};
 		int						getSocketFd()		const	{return (_socketFd);};
 		int						getPort()			const	{return (_port);};
 		std::string				getPassword()		const	{return (_password);};

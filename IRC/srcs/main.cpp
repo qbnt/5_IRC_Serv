@@ -3,14 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 09:49:50 by mescobar          #+#    #+#             */
-/*   Updated: 2024/04/23 11:33:29 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/03 12:10:31 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "IRC.hpp"
+
+std::string	timeString(){
+	time_t	rawtime;
+	struct	tm*timeinfo;
+	char	buff[80];
+	
+	time(&rawtime);
+	timeinfo = localtime(&rawtime);
+	strftime(buff, sizeof(buff), "%c", timeinfo);
+	return (buff);
+}
 
 std::vector<std::string>	ft_split(std::string str, char c){
 	std::vector<std::string>	cmd;

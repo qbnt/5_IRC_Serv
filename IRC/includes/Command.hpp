@@ -7,12 +7,14 @@ class Client;
 class Command
 {
 	protected:
-		Server *_server;
+		Server	*_server;
+		bool	_auth;
 
 	public:
 		explicit Command(Server *server): _server(server){};
 		virtual ~Command(){};
 
+		bool	getAuth() const {return (_auth);};
 		virtual void execute(Client *client, std::vector<std::string> arguments) = 0;
 };
 
@@ -31,7 +33,7 @@ class PrivMsgCommand : public Command
 		PrivMsgCommand(Server *server);
 		~PrivMsgCommand();
 
-		void execute(Client *client, std::vector<std::string> arguments);
+		void	execute(Client *client, std::vector<std::string> arguments);
 };
 
 class PartCommand : public Command
