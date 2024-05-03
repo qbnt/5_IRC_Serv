@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IRC.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 09:49:14 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/01 13:34:14 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/03 12:10:56 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 # include "poll.h"
 # include "vector"
 # include "map"
+# include "sys/time.h"
+# include "ctime"
 
 # include "Server.hpp"
 # include "Channel.hpp"
@@ -47,4 +49,5 @@
 # define USERMODES				""
 # define CHANNELMODES			"tikol"
 
-std::vector<std::string> ft_split(std::string, char);
+std::vector<std::string>	ft_split(std::string, char);
+std::string					timeString(void);
