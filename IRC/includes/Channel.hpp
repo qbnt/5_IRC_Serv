@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:38:49 by qbanet            #+#    #+#             */
-/*   Updated: 2024/05/01 17:26:25 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/03 12:23:49 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ class Channel {
 	private:
 		// * Infos Channel
 		std::string		_name;
-		std::string		_topic;
-		std::string		_password;
 		unsigned int	_maxUsr;
+		bool			_inviteMode;
+		std::string		_password;
 
 		// * Pointeur serveur
 		Server *		_serv;
@@ -33,25 +33,29 @@ class Channel {
 		std::vector<Client *>	_op;
 
 	public:
-		Channel(std::string const &name, std::string const &topic, std::string const &password, Client *admin, Server *serv);
+		Channel(std::string const &name, std::string const &password, Client *admin, Server *serv);
 		~Channel();
 
 		// * Fonctions
-		void							addUser(Client *);
-		void							removeUser(Client *, std::string const& reason);
-		void							removeOp(Client const *);
 		void							diff(const std::string &);
+		void							addUser(Client *);
+		void							removeUser(Client *, std::string reason);
+		void							addOp(Client * cl);
+		void							removeOp(Client *, Client *target, std::string reason);
+		void							kick(Client *, Client * target, std::string reason);
+		void							invit(Client *, Client * target);
 
 		bool							isInChan(Client const *);
 		bool							isOp(Client const *);
 		unsigned int					getNbrUsr();
 		std::vector<std::string>		getAllNickname();
+		unsigned long 					clientIndex(std::vector<Client *> clients, Client *client);
 
 		// * Getteurs
 		std::string const &			getName() const		{return _name; };
-		std::string const &			getTopic() const	{return _topic; };
-		std::string const &			getPassword() const	{return _password; };
 		unsigned int const &		getMaxUsr() const	{return _maxUsr; };
+		bool const &				getInvMode() const	{return _inviteMode; };
+		std::string const &			getPassword() const	{return _password; };
 
 		Server const *				getServ() const		{return _serv; };
 		Client const *				getAdmin() const	{return _admin; };
@@ -61,10 +65,9 @@ class Channel {
 
 		// * Setteurs
 		void	setName(std::string const &name)		{_name = name; };
-		void	setTopic(std::string const &topic)		{_topic = topic; };
-		void	setPassword(std::string const &pw)		{_password = pw; };
 		void	setMaxUsr(unsigned int const &nb)		{_maxUsr = nb; };
+		void	setInvMode(bool oui)					{_inviteMode = oui; };
+		void	setPassword(std::string const &pw)		{_password = pw; };
 
 		void	setAdmin(Client * cl)					{_admin = cl; };
-		void	setNewOp(Client * cl)					{_op.push_back(cl); };
 };

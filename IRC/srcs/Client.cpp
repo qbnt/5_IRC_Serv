@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 16:18:07 by qbanet            #+#    #+#             */
-/*   Updated: 2024/05/01 17:11:20 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/03 12:27:42 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	Client::linkSetMsg() const {
 		return ;
 	sendMsg(RPL_WELCOME(getNickname(), getHostname()));
 	sendMsg(RPL_YOURHOST(getNickname(), _serv->getServerName(), VERSION));
-	sendMsg(RPL_CREATED(getNickname(), _serv->_getStartTime()));
+	sendMsg(RPL_CREATED(getNickname(), _startTime));
 	sendMsg(RPL_MYINFO(getNickname(), _serv->getServerName(), VERSION, USERMODES, CHANNELMODES));
 
 	sendMsg(RPL_MOTDSTART(getNickname(), _serv->getServerName()));
@@ -60,7 +60,7 @@ void	Client::joinChan(Channel *chan) {
 	_usrChan.push_back(chan);
 	if (chan->getNbrUsr() == 1) {
 		chan->setAdmin(this);
-		chan->setNewOp(this);
+		chan->addOp(this);
 	}
 
 	std::string users;
