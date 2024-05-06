@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:46:32 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/06 09:50:24 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/06 12:57:59 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ class Server: public Error{
 		ssize_t	send(std::string, int) const;
 		void	addClient(int const, std::string const, int const);
 		void	deleteClient(int);
+		void	broadcast(std::string const&) const;
+		void	broadcast(std::string const&, int) const;
 
 		//setters:
 		void	setSocketFd(int cp)							{_socketFd = cp;};
@@ -66,4 +68,5 @@ class Server: public Error{
 		std::vector<Client*>	getClientsVector()	const	{return (_clientsReady);};
 		pollfd*					getClientsFd()		const	{return (_clientsFd);};
 		CommandsUse*			getCommands()		const	{return (_commands);};
+		Client*					getClient(std::string const& cl);
 };

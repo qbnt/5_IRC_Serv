@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:50:22 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/06 09:51:20 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/06 12:13:15 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,5 @@ class Client{
 		void		setNickname(std::string const & ps)		{_nickname = ps; };
 		void		setUsername(std::string const & us)		{_username = us; };
 		void		setRealname(std::string const & pw)		{_realname = pw; };
+		void		setPasswordOk(bool const& pw)			{_passwordOk = pw;};
 };

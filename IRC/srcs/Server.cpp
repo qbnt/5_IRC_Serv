@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/06 10:01:41 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/06 13:02:22 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,16 @@ void	Server::IRC(){
 	}
 }
 
+Client*	Server::getClient(std::string const& cl){
+	std::vector<Client*>::iterator it = _clientsReady.begin();
+	while (it != _clientsReady.end()){
+		if ((*it)->getNickname() == cl)
+			return (*it);
+		it++;
+	}
+	return NULL;
+}
+
 void	Server::addClient(int const socket, std::string const ip, int const port){
 	this->_clientsReady.push_back(new Client(this, socket, ip, port));
 	this->_createClientFds();
@@ -157,4 +167,17 @@ ssize_t	Server::send(std::string message, int fd) const{
 	if (send != (ssize_t)message.length())
 		std::cout << "Message sent incomplete" << std::endl;
 	return (send);
+}
+
+void	Server::broadcast(std::string const& message) const{
+	for (unsigned int i = 0; i < _clientsReady.size(); i++){
+		this->send(message, _clientsReady[i]->getClientSocket());
+	}
+}
+
+void	Server::broadcast(std::string const& message, int exclude) const{
+	for (unsigned int i = 0; i < _clientsReady.size(); i++){
+		if (_clientsReady[i]->getClientSocket() != exclude)
+			this->send(message, _clientsReady[i]->getClientSocket());
+	}
 }
