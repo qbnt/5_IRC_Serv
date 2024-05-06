@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 16:18:07 by qbanet            #+#    #+#             */
-/*   Updated: 2024/05/03 12:40:58 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/06 09:59:33 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	Client::leaveChan(Channel * chan, bool kicked, std::string const& reason) {
 //----------------------------Constructs & Destruct---------------------------||
 
 Client::Client(Server * serv, int const socket, std::string const &ip, int const port)
-				: _serv(serv), _socket(socket), _hostname(ip), _port(port), _passwordOk(false) {
+				: _socket(socket), _port(port), _hostname(ip), _passwordOk(false), _serv(serv) {
 
 	std::clog << "Client " << "crée avec le socket -> " << socket << std::endl;
 }

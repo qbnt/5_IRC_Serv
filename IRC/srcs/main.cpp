@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 09:49:50 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/03 12:34:22 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/06 09:48:22 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ std::vector<std::string>	ft_split(std::string str, char c){
 	int j = 0;
 	if (str.empty())
 		cmd.push_back("");
-	for (int i = 0; i < str.size(); i++){
+	for (size_t i = 0; i < str.size(); i++){
 		while (str[i] && str[i] != c)
 			i++;
 		cmd.push_back(str.substr(j, i));
@@ -38,7 +38,7 @@ std::vector<std::string>	ft_split(std::string str, char c){
 }
 
 int	allDigits(char *ag){
-	for (int i = 0; i < strlen(ag); i++)
+	for (long unsigned int i = 0; i < strlen(ag); i++)
 		if (!isdigit(ag[i]))
 			return (0);
 	return (1);
@@ -53,6 +53,6 @@ int	main(int ac, char** ag){
 		std::cout << "Invalid <port>, use only digits" << std::endl;
 		return (0);
 	}
-	Server serv = Server(atoi(ag[1]), ag[2]);
+	Server(atoi(ag[1]), ag[2]);
 	return 0;
 }

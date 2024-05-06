@@ -3,15 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:50:22 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/03 12:42:00 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/06 09:51:20 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 #include "IRC.hpp"
+
+class Channel;
+class Server;
 
 //----------------------------------------------------------------------------||
 
@@ -19,8 +22,6 @@ typedef typename std::vector<Channel *>::iterator ChanVecIt;
 
 //----------------------------------------------------------------------------||
 
-class Channel;
-class Server;
 
 class Client{
 	private:

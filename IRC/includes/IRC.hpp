@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IRC.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 09:49:14 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/03 12:10:56 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/06 09:50:22 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@
 # include "sys/time.h"
 # include "ctime"
 
-# include "Server.hpp"
 # include "Channel.hpp"
 # include "Client.hpp"
-# include "Error.hpp"
 # include "Command.hpp"
 # include "CommandsUse.hpp"
+# include "Error.hpp"
 # include "rpl.hpp"
+# include "Server.hpp"
 
 # define BUFFER_SIZE			8192
 # define SOCKET_ERROR			-1

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 15:56:02 by qbanet            #+#    #+#             */
-/*   Updated: 2024/05/03 12:27:06 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/06 09:55:27 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ Client const *	Channel::getClient(std::string const &pseudo) {
 //---------------------------Construct & Destructs----------------------------||
 
 Channel::Channel(std::string const &nm, std::string const &pw, Client *adm, Server *serv)
-				: _name(nm), _password(pw), _admin(adm), _serv(serv), _maxUsr(42) {}
+				: _name(nm), _maxUsr(42), _password(pw), _serv(serv), _admin(adm) {}
 
 Channel::~Channel() {
 	// TODO: Ajouter la libération de mémoire si besoin

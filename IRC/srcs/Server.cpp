@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/03 12:08:43 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/06 10:01:41 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,14 @@ void	Server::_parsMessage(std::string msg, Client* client){
 	else
 		cmd.push_back(msg);
 	for (std::vector<std::string>::iterator it = cmd.begin(); it != cmd.end(); it++){
-		_commands.handle(client, *it);
+		_commands->handle(client, *it);
 	}
 }
 
 void	Server::_clientMessage(Client*	client){
 	char buff[BUFFER_SIZE + 1];
 	while (true){
-		int	res = recv(client->getClientSocket(), buff, BUFFER_SIZE + 1, NULL);
+		int	res = recv(client->getClientSocket(), buff, BUFFER_SIZE + 1, 0);
 		if (res < 0){
 			std::cout << "Error: recv() from client: " << client->getClientSocket();
 			this->deleteClient(client->getClientSocket());
@@ -103,7 +103,7 @@ void	Server::IRC(){
 	adress.sin6_family = AF_INET6;
 	adress.sin6_addr = in6addr_any;
 	adress.sin6_port = htons(this->_port);
-	if (bind(this->_socketFd, (struct sockaddr*)&adress, sizeof(adress)) < 0)
+	if (bind(this->_socketFd, (struct sockaddr*)&adress, adresslen) < 0)
 		throw(Bind());
 
 	std::cout << "ircserv connected on port: " << this->_port << std::endl;

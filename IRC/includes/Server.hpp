@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:46:32 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/03 12:40:16 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/06 09:50:24 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "IRC.hpp"
 
 class Client;
+class CommandsUse;
 class Server: public Error{
 	private:
 
@@ -24,7 +25,7 @@ class Server: public Error{
 		int						_socketFd;
 		std::vector<Client *>	_clientsReady;
 		pollfd*					_clientsFd;
-		CommandsUse				_commands;
+		CommandsUse*			_commands;
 		std::string				_startTime;
 
 		void	_createClientFds(void);
@@ -54,7 +55,7 @@ class Server: public Error{
 		void	setServerName(std::string cp)				{_serverName = cp;};
 		void	setClientsVector(std::vector<Client*> cp)	{_clientsReady = cp;};
 		void	setClientsFd(pollfd* cp)					{_clientsFd = cp;};
-		void	setCommands(CommandsUse cp)					{_commands = cp;};
+		void	setCommands(CommandsUse* cp)				{_commands = cp;};
 
 		//getters:
 		std::string				getStartTime()		const	{return (_startTime);};
@@ -64,5 +65,5 @@ class Server: public Error{
 		std::string				getServerName() 	const	{return (_serverName);};
 		std::vector<Client*>	getClientsVector()	const	{return (_clientsReady);};
 		pollfd*					getClientsFd()		const	{return (_clientsFd);};
-		CommandsUse				getCommands()		const	{return (_commands);};
+		CommandsUse*			getCommands()		const	{return (_commands);};
 };
