@@ -23,6 +23,7 @@ SRC_FILES = main.cpp \
 			commands/PartCommand.cpp \
 			commands/PassCommand.cpp \
 			commands/PingCommand.cpp \
+			commands/PongCommand.cpp \
 			commands/PrivMsgCommand.cpp \
 			commands/QuitCommand.cpp \
 			commands/UserCommand.cpp \

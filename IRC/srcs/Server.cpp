@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/08 14:50:50 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/08 15:01:50 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,4 +256,14 @@ std::vector<std::string>	Server::getNicknames(){
 		it++;
 	}
 	return (nicknames);
+}
+
+Channel *Server::getChannel(const std::string &name)
+{
+	std::vector<Channel *>::iterator it;
+	for (it = _channels.begin(); it != _channels.end(); it++)
+		if (it.operator*()->getName() == name)
+			return it.operator*();
+
+	return NULL;
 }

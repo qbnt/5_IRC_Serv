@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:46:32 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/08 14:50:23 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/08 15:02:11 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,9 @@ class Server: public Error{
 		std::string					getPassword()					const	{return (_password);};
 		std::string					getServerName() 				const	{return (_serverName);};
 		std::vector<Client*>		getClientsVector()				const	{return (_clientsReady);};
+		std::vector<Channel *>		getChannels()					const	{return (_channels); };
 		CommandsUse*				getCommands()					const	{return (_commands);};
-		Channel*					getChannel(std::string const&)	const;
+		Channel*					getChannel(std::string const&);
 		Client*						getClient(std::string const&);
 		Client*						getClientsFd(int);
 		std::vector<std::string>	getNicknames();
