@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IRC.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 09:49:14 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/06 09:50:22 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/06 13:10:35 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@
 # define VERSION				"0.42"
 # define USERMODES				""
 # define CHANNELMODES			"tikol"
+# define KICKDEFREASON			"Bha je sais pas lol"
 
 std::vector<std::string>	ft_split(std::string, char);
 std::string					timeString(void);

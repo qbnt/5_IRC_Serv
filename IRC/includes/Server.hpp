@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:46:32 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/06 09:50:24 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/06 12:43:59 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ class Server: public Error{
 		std::string 			_serverName;
 		int						_socketFd;
 		std::vector<Client *>	_clientsReady;
+		std::vector<Channel *>	_channels;
 		pollfd*					_clientsFd;
 		CommandsUse*			_commands;
 		std::string				_startTime;
@@ -43,10 +44,11 @@ class Server: public Error{
 		Server(int, std::string const& password);
 		~Server();
 
-		void	IRC();
-		ssize_t	send(std::string, int) const;
-		void	addClient(int const, std::string const, int const);
-		void	deleteClient(int);
+		void		IRC();
+		ssize_t		send(std::string, int) const;
+		void		addClient(int const, std::string const, int const);
+		void		deleteClient(int);
+		Channel *	createChannel(std::string name, std::string password, Client *);
 
 		//setters:
 		void	setSocketFd(int cp)							{_socketFd = cp;};
@@ -64,6 +66,9 @@ class Server: public Error{
 		std::string				getPassword()		const	{return (_password);};
 		std::string				getServerName() 	const	{return (_serverName);};
 		std::vector<Client*>	getClientsVector()	const	{return (_clientsReady);};
+		Client *				getClient(std::string const &);
+		std::vector<Channel *>	getChannels()		const	{return (_channels); };
+		Channel *				getChannel(std::string const &);
 		pollfd*					getClientsFd()		const	{return (_clientsFd);};
 		CommandsUse*			getCommands()		const	{return (_commands);};
 };

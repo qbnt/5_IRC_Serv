@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 15:56:02 by qbanet            #+#    #+#             */
-/*   Updated: 2024/05/06 09:55:27 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/08 13:53:04 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,17 @@ void	Channel::diff(std::string const & msg) {
 	ChanIter it;
 	for(it = _clients.begin(); it != _clients.end(); it++) {
 		(*it)->send(msg);
+	}
+}
+
+void Channel::diff(const std::string &message, Client *exclude) {
+
+	std::vector<Client *>::iterator it;;
+	for (it = _clients.begin(); it != _clients.end(); it++)
+	{
+		if (*it == exclude)
+			continue;
+		(*it)->sendMsg(message);
 	}
 }
 
@@ -55,11 +66,13 @@ void	Channel::addOp(Client *newOp) {
 	_op.push_back(newOp);
 }
 
-void	Channel::removeOp(Client *origin, Client *target, std::string reason) {
+void	Channel::removeOp(Client *usr) {
 
-	diff(RPL_KICK(origin->getNickname(), _name, target->getNickname(), reason));
-	reason.clear();
-	removeUser(target, reason);
+	std::vector<Client *>::iterator it = _op.begin();
+	while (it != _op.end() || (*it) != usr) {
+		it ++;
+	}
+	_op.erase(it);
 }
 
 void	Channel::invit(Client *origin, Client *target) {
@@ -130,7 +143,7 @@ unsigned long Channel::clientIndex(std::vector<Client *> clients, Client *client
 
 //---------------------------Getteurs & Setteurs------------------------------||
 
-Client const *	Channel::getClient(std::string const &pseudo) {
+Client *	Channel::getClient(std::string const &pseudo) {
 
 	for (ChanIter it = _clients.begin(); it != _clients.end(); it ++) {
 		if ((*it)->getNickname() == pseudo)

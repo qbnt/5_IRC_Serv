@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/06 10:01:41 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/06 12:46:55 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,4 +157,31 @@ ssize_t	Server::send(std::string message, int fd) const{
 	if (send != (ssize_t)message.length())
 		std::cout << "Message sent incomplete" << std::endl;
 	return (send);
+}
+
+Channel *	Server::getChannel(std::string const & name) {
+
+	std::vector<Channel *>::iterator it;
+	for (it = _channels.begin(); it != _channels.end(); it ++){
+		if ((*it)->getName() == name)
+			return *it;
+	}
+	return NULL;
+}
+
+Client *	Server::getClient(std::string const & name) {
+
+	std::vector<Client *>::iterator it;
+	for(it = _clientsReady.begin(); it != _clientsReady.end(); it ++) {
+		if ((*it)->getNickname() == name)
+			return *it;
+	}
+	return NULL;
+}
+
+Channel *	Server::createChannel(std::string name, std::string password, Client *usr) {
+
+	Channel *newChan = new Channel(name, password, usr, this);
+	_channels.push_back(newChan);
+	return newChan;
 }

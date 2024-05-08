@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:38:49 by qbanet            #+#    #+#             */
-/*   Updated: 2024/05/06 09:51:09 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/08 13:51:27 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,11 @@ class Channel {
 
 		// * Fonctions
 		void							diff(const std::string &);
+		void							diff(const std::string &, Client *);
 		void							addUser(Client *);
 		void							removeUser(Client *, std::string reason);
 		void							addOp(Client * cl);
-		void							removeOp(Client *, Client *target, std::string reason);
+		void							removeOp(Client *);
 		void							kick(Client *, Client * target, std::string reason);
 		void							invit(Client *, Client * target);
 
@@ -63,7 +64,7 @@ class Channel {
 		Client const *				getAdmin() const	{return _admin; };
 		std::vector<Client *> const	getClients() const	{return _clients; };
 		std::vector<Client *> const	getOp()	const		{return _op; };
-		Client const *				getClient(std::string const &);
+		Client *					getClient(std::string const &);
 
 		// * Setteurs
 		void	setName(std::string const &name)		{_name = name; };
