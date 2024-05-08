@@ -12,7 +12,21 @@ SRC_FILES = main.cpp \
 			Channel.cpp \
 			Client.cpp \
 			CommandsUse.cpp \
-			Server.cpp
+			Server.cpp \
+			commands/InvitCommand.cpp \
+			commands/JoinCommand.cpp \
+			commands/KickCommand.cpp \
+			commands/ListCommand.cpp \
+			commands/ModeCommand.cpp \
+			commands/NickCommand.cpp \
+			commands/NoticeCommand.cpp \
+			commands/PartCommand.cpp \
+			commands/PassCommand.cpp \
+			commands/PingCommand.cpp \
+			commands/PrivMsgCommand.cpp \
+			commands/QuitCommand.cpp \
+			commands/UserCommand.cpp \
+			commands/WhoCommand.cpp \
 
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ = $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
