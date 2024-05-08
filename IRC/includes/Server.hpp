@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:46:32 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/06 12:43:59 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/08 14:50:23 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 class Client;
 class CommandsUse;
+class Channel;
 class Server: public Error{
 	private:
 
@@ -24,7 +25,7 @@ class Server: public Error{
 		std::string 			_serverName;
 		int						_socketFd;
 		std::vector<Client *>	_clientsReady;
-		std::vector<Channel *>	_channels;
+		std::vector<Channel*>	_channels;
 		pollfd*					_clientsFd;
 		CommandsUse*			_commands;
 		std::string				_startTime;
@@ -35,6 +36,7 @@ class Server: public Error{
 		void	_recvMessage(Client*);
 		void	_parsMessage(std::string, Client*);
 		void	_clientMessage(Client*);
+		void	_setNonBlocking(int);
 
 		Server();
 		Server(Server const&);
@@ -45,10 +47,14 @@ class Server: public Error{
 		~Server();
 
 		void		IRC();
-		ssize_t		send(std::string, int) const;
+		ssize_t		send(std::string, int) 											const;
 		void		addClient(int const, std::string const, int const);
-		void		deleteClient(int);
-		Channel *	createChannel(std::string name, std::string password, Client *);
+		int			deleteClient(int);
+		void		broadcast(std::string const&) 									const;
+		void		broadcast(std::string const&, int) 								const;
+		void		broadcastChannel(std::string const&, int, Channel const*)		const;
+		void		broadcastChannel(std::string const&, Channel const*)			const;
+		Channel*	createChannel(std::string const&, std::string const&, Client*);
 
 		//setters:
 		void	setSocketFd(int cp)							{_socketFd = cp;};
@@ -60,15 +66,15 @@ class Server: public Error{
 		void	setCommands(CommandsUse* cp)				{_commands = cp;};
 
 		//getters:
-		std::string				getStartTime()		const	{return (_startTime);};
-		int						getSocketFd()		const	{return (_socketFd);};
-		int						getPort()			const	{return (_port);};
-		std::string				getPassword()		const	{return (_password);};
-		std::string				getServerName() 	const	{return (_serverName);};
-		std::vector<Client*>	getClientsVector()	const	{return (_clientsReady);};
-		Client *				getClient(std::string const &);
-		std::vector<Channel *>	getChannels()		const	{return (_channels); };
-		Channel *				getChannel(std::string const &);
-		pollfd*					getClientsFd()		const	{return (_clientsFd);};
-		CommandsUse*			getCommands()		const	{return (_commands);};
+		std::string					getStartTime()					const	{return (_startTime);};
+		int							getSocketFd()					const	{return (_socketFd);};
+		int							getPort()						const	{return (_port);};
+		std::string					getPassword()					const	{return (_password);};
+		std::string					getServerName() 				const	{return (_serverName);};
+		std::vector<Client*>		getClientsVector()				const	{return (_clientsReady);};
+		CommandsUse*				getCommands()					const	{return (_commands);};
+		Channel*					getChannel(std::string const&)	const;
+		Client*						getClient(std::string const&);
+		Client*						getClientsFd(int);
+		std::vector<std::string>	getNicknames();
 };

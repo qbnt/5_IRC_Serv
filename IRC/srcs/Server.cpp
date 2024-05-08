@@ -6,11 +6,19 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/06 12:46:55 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/08 14:50:50 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
+
+void	Server::_setNonBlocking(int fd){
+	if (fcntl(fd, F_SETFL, O_NONBLOCK) < 0){
+		std::cout << "Error: Cannot set socket to non-blocking" << std::endl;
+		if (fd != this->_socketFd)
+			this->deleteClient(fd);
+	}
+}
 
 void	Server::_createClientFds(void){
 	if (this->_clientsFd)
@@ -125,8 +133,26 @@ void	Server::IRC(){
 	}
 }
 
+Client*	Server::getClient(std::string const& cl){
+	std::vector<Client*>::iterator it = _clientsReady.begin();
+	while (it != _clientsReady.end()){
+		if ((*it)->getNickname() == cl)
+			return (*it);
+		it++;
+	}
+	return NULL;
+}
+
 void	Server::addClient(int const socket, std::string const ip, int const port){
-	this->_clientsReady.push_back(new Client(this, socket, ip, port));
+	std::string newip = ip;
+	if (newip.find("::ffff:") != std::string::npos)
+		newip = newip.substr(7);
+	else if (newip.find("::") != std::string::npos)
+		newip = newip.substr(2);
+	if (newip.empty() || newip == "1")
+		newip = "127.0.0.1";
+	this->_clientsReady.push_back(new Client(this, socket, newip, port));
+	this->_setNonBlocking(socket);
 	this->_createClientFds();
 }
 
@@ -135,6 +161,7 @@ Server::Server(int port, std::string const& password): _port(port), _password(pa
 	_socketFd = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
 	_clientsFd = NULL;;
 	_startTime = timeString();
+	_commands = new CommandsUse(this);
 	this->IRC();
 }
 
@@ -159,29 +186,74 @@ ssize_t	Server::send(std::string message, int fd) const{
 	return (send);
 }
 
-Channel *	Server::getChannel(std::string const & name) {
-
-	std::vector<Channel *>::iterator it;
-	for (it = _channels.begin(); it != _channels.end(); it ++){
-		if ((*it)->getName() == name)
-			return *it;
+void	Server::broadcast(std::string const& message) const{
+	for (unsigned int i = 0; i < _clientsReady.size(); i++){
+		this->send(message, _clientsReady[i]->getClientSocket());
 	}
-	return NULL;
 }
 
-Client *	Server::getClient(std::string const & name) {
-
-	std::vector<Client *>::iterator it;
-	for(it = _clientsReady.begin(); it != _clientsReady.end(); it ++) {
-		if ((*it)->getNickname() == name)
-			return *it;
+void	Server::broadcast(std::string const& message, int exclude) const{
+	for (unsigned int i = 0; i < _clientsReady.size(); i++){
+		if (_clientsReady[i]->getClientSocket() != exclude)
+			this->send(message, _clientsReady[i]->getClientSocket());
 	}
-	return NULL;
 }
 
-Channel *	Server::createChannel(std::string name, std::string password, Client *usr) {
+Client*	Server::getClientsFd(int fd){
+	for (unsigned int i = 0; i < this->_clientsReady.size(); i++){
+		if (this->_clientsReady[i]->getClientSocket() == fd)
+			return (this->_clientsReady[i]);
+	}
+	return (NULL);
+}
 
-	Channel *newChan = new Channel(name, password, usr, this);
-	_channels.push_back(newChan);
-	return newChan;
+Channel*	Server::createChannel(std::string const& name, std::string const& pass, Client* client){
+	Channel* channel = new Channel(name, pass, client, this);
+	_channels.push_back(channel);
+	return (channel);
+}
+
+void	Server::broadcastChannel(std::string const& msg, int fd_exclude, Channel const* channel) const{
+	std::vector<Client*> clients = channel->getClients();
+	
+	for (unsigned int i = 0; i < clients.size(); i++){
+		if (clients[i]->getClientSocket() == fd_exclude)
+			this->send(msg, clients[i]->getClientSocket());
+	}
+}
+
+void	Server::broadcastChannel(std::string const& msg, Channel const* channel) const{
+	std::vector<Client*> clients = channel->getClients();
+	
+	for (unsigned int i = 0; i < clients.size(); i++){
+			this->send(msg, clients[i]->getClientSocket());
+	}
+}
+
+int	Server::deleteClient(int socket){
+	std::string empty = "";
+	
+	for (unsigned int i = 0; i < this->_clientsReady.size(); i++){
+		if (this->_clientsReady[i]->getClientSocket() == socket){
+			for (unsigned int j = 0; j < _channels.size(); j++){
+				if (this->_channels[j]->isInChan(this->_clientsReady[i]))
+					this->_channels[j]->removeUser(this->_clientsReady[i], empty);
+			}
+			this->_clientsReady.erase(this->_clientsReady.begin() + i);
+			break;
+		}
+	}
+	this->_createClientFds();
+	close(socket);
+	return (this->_clientsReady.size());
+}
+
+std::vector<std::string>	Server::getNicknames(){
+	std::vector<std::string> nicknames;
+	std::vector<Client*>::iterator it = _clientsReady.begin();
+	while (it != _clientsReady.end()){
+		nicknames.push_back(((*it)->getNickname()));
+		it++;
+	}
+	return (nicknames);
 }

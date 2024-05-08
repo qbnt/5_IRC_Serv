@@ -11,7 +11,7 @@ class Command
 		bool	_auth;
 
 	public:
-		explicit Command(Server *server): _server(server){};
+		explicit Command(Server *server, bool authRequired = true) : _server(server), _auth(authRequired){};
 		virtual ~Command(){};
 
 		bool	getAuth() const {return (_auth);};
