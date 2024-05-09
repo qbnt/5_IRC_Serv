@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/08 15:01:50 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/09 07:26:28 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	Server::IRC(){
 	//creation of socket
 	if (_socketFd == SOCKET_ERROR)
 		throw(Socket());
-	if (setsockopt(_socketFd, SOL_SOCKET, SO_REUSEADDR, (char *)&opt, sizeof(opt) < 0))
+	if (setsockopt(_socketFd, SOL_SOCKET, SO_REUSEADDR, (char *)&opt, sizeof(opt)) < 0)
 		throw(SocketOptions());
 
 	//type of socket and bind to the port
@@ -123,13 +123,13 @@ void	Server::IRC(){
 	while (true){
 		std::cout << "Server waiting for connections." << std::endl;
 		this->_waitForConnections();
-		usleep(100);
+		usleep(1000);
 		std::cout << "Server waiting for connections.." << std::endl;
 		this->_waitForConnections();
-		usleep(100);
+		usleep(1000);
 		std::cout << "Server waiting for connections..." << std::endl;
 		this->_waitForConnections();
-		usleep(100);
+		usleep(1000);
 	}
 }
 
