@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/09 07:26:28 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/09 13:45:16 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,12 @@ Server::Server(int port, std::string const& password): _port(port), _password(pa
 }
 
 Server::~Server(){
-	// TODO: Ajouter la libération de mémoire si besoin;
+	for (unsigned int i = 0; i < _clientsReady.size(); i++)
+		delete this->_clientsReady[i];
+	for (unsigned int i = 0; i < _channels.size(); i++)
+		delete this->_channels[i];
+	delete this->_commands;
+	delete [] this->_clientsFd;
 	close(_socketFd);
 }
 
