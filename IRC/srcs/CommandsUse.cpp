@@ -45,8 +45,10 @@ void	CommandsUse::handle(Client* client, std::string const& message){
 			while (ss >> buff){
 				commandArguments.push_back(buff);
 			}
-			if (ccomand->getAuth() && !client->isOk())
+			if (ccomand->getAuth() && !client->isOk()){
+				client->sendMsg(ERR_NOTREGISTERED(client->getNickname()));
 				return ;
+			}
 			ccomand->execute(client, commandArguments);
 		}
 		catch(const std::out_of_range &e){

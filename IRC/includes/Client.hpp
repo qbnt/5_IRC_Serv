@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:50:22 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/06 12:13:15 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/13 13:04:38 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ class Client{
 		std::string				_nickname;
 		std::string				_username;
 		std::string				_realname;
+		std::string				_message;
 
 	public:
 		Client(Server *, int const socket, std::string const &hn, int const port);
@@ -63,8 +64,10 @@ class Client{
 		std::string const &				getNickname() const	{return _nickname; };
 		std::string const & 			getUsername() const	{return _username; };
 		std::string const &				getRealname() const	{return _realname; };
+		std::string const &				getMessage() const	{return _message;};
 
 		// * Setters
+		void		setMessage(std::string const & ps)		{_message = ps;};
 		void		setNickname(std::string const & ps)		{_nickname = ps; };
 		void		setUsername(std::string const & us)		{_username = us; };
 		void		setRealname(std::string const & pw)		{_realname = pw; };

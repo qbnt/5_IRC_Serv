@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/13 12:42:49 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/13 13:24:10 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,30 +33,38 @@ void	Server::_createClientFds(void){
 }
 
 void	Server::_acceptConnection(){
-	struct sockaddr_in6	address;
-	socklen_t			addrlen = sizeof(address);
-	int					newsockfd = accept(this->_socketFd, (struct sockaddr*)&address, (socklen_t*)&addrlen);
-	if (newsockfd < 0){
-		std::cout << "Error: couldn't accept connection." << std::endl;
-		return ;
-	}
-	//we got a connection so we add the client to the list
-	char str_ipv6_addr[INET6_ADDRSTRLEN];
-	this->addClient(newsockfd, inet_ntop(AF_INET6, &address, str_ipv6_addr, INET6_ADDRSTRLEN), DEFAULT_PORT);
-	std::cout << "server: connection received from: " << inet_ntop(AF_INET6, &address, str_ipv6_addr, INET6_ADDRSTRLEN) \
-		<< " port: " << ntohs(address.sin6_port) << std::endl;
+	// struct sockaddr_in6	address;
+	// socklen_t			addrlen = sizeof(address);
+	// int					newsockfd = accept(this->_socketFd, (struct sockaddr*)&address, (socklen_t*)&addrlen);
+	// if (newsockfd < 0){
+	// 	std::cout << "Error: couldn't accept connection." << std::endl;
+	// 	return ;
+	// }
+	// //we got a connection so we add the client to the list
+	// char str_ipv6_addr[INET6_ADDRSTRLEN];
+	// this->addClient(newsockfd, inet_ntop(AF_INET6, &address, str_ipv6_addr, INET6_ADDRSTRLEN), DEFAULT_PORT);
+	// std::cout << "server: connection received from: " << inet_ntop(AF_INET6, &address, str_ipv6_addr, INET6_ADDRSTRLEN) 
+	// 	<< " port: " << ntohs(address.sin6_port) << std::endl;
+
+	int socket;
+	do{
+		struct sockaddr_in6 address;
+		socklen_t addrlen = sizeof(address);
+		socket = accept(this->_socketFd, (struct sockaddr*)&address, (socklen_t*)&addrlen);
+		if (socket < 0)
+			break;
+		this->addClient(socket, ft_inet_ntop6(&address.sin6_addr), ntohs(address.sin6_port));
+	}while (socket != -1);
 }
 
 void	Server::_parsMessage(std::string msg, Client* client){
-	std::vector<std::string> cmd;
-	if (msg.find('\n') != 0)
-		cmd = ft_split(msg, '\n');
-	else
-		cmd.push_back(msg);
-	std::cout << cmd.at(0) << std::endl;
-	for (std::vector<std::string>::iterator it = cmd.begin(); it != cmd.end(); it++){
-		_commands->handle(client, *it);
+	if (msg.at(msg.size() - 1) == '\n'){
+		std::vector<std::string> cmd = ft_split(client->getMessage() + msg, '\n');
+		for (std::vector<std::string>::iterator it = cmd.begin(); it != cmd.end(); it++)
+			this->_commands->handle(client, *it);
 	}
+	else
+		client->setMessage(client->getMessage() + msg);
 }
 
 void	Server::_clientMessage(Client*	client){

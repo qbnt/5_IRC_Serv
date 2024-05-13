@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IRC.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 09:49:14 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/06 13:10:35 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/13 13:22:59 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # include "map"
 # include "sys/time.h"
 # include "ctime"
+# include "stdio.h"
 
 # include "Channel.hpp"
 # include "Client.hpp"
@@ -52,3 +53,4 @@
 
 std::vector<std::string>	ft_split(std::string, char);
 std::string					timeString(void);
+std::string 				ft_inet_ntop6(const void *a0);
