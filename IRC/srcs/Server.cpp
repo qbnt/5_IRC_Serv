@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/09 13:45:16 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/13 12:42:49 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,16 @@ void	Server::_acceptConnection(){
 	char str_ipv6_addr[INET6_ADDRSTRLEN];
 	this->addClient(newsockfd, inet_ntop(AF_INET6, &address, str_ipv6_addr, INET6_ADDRSTRLEN), DEFAULT_PORT);
 	std::cout << "server: connection received from: " << inet_ntop(AF_INET6, &address, str_ipv6_addr, INET6_ADDRSTRLEN) \
-		<< "port: " << ntohs(address.sin6_port) << std::endl;
+		<< " port: " << ntohs(address.sin6_port) << std::endl;
 }
 
 void	Server::_parsMessage(std::string msg, Client* client){
 	std::vector<std::string> cmd;
 	if (msg.find('\n') != 0)
-		cmd = ft_split(msg, 'c');
+		cmd = ft_split(msg, '\n');
 	else
 		cmd.push_back(msg);
+	std::cout << cmd.at(0) << std::endl;
 	for (std::vector<std::string>::iterator it = cmd.begin(); it != cmd.end(); it++){
 		_commands->handle(client, *it);
 	}
@@ -84,15 +85,17 @@ void	Server::_waitForConnections(){
 	if (socketActivity < 0)
 		std::cout << "Error: No socket activity." << std::endl;
 
-	for (size_t i = 0; i < _clientsReady.size(); i++){
+	for (unsigned int i = 0; i < _clientsReady.size() + 1; i++){
 		//if revents == 0 that means that there is no activity
 		if (this->_clientsFd[i].revents == 0)
 			continue;
 		if (this->_clientsFd[i].fd == this->_socketFd) //if there is some activity, we treat it as a connection
 			this->_acceptConnection();
 		//we take the message from the last client
-		Client*	client = this->_clientsReady[i - 1];
-		this->_clientMessage(client);
+		else if (i > 0){
+			Client*	client = this->_clientsReady[i - 1];
+			this->_clientMessage(client);
+		}
 	}
 }
 
@@ -120,16 +123,9 @@ void	Server::IRC(){
 	this->_createClientFds();
 	if (listen(_socketFd, 32) < 0)
 		throw(Listen());
+	std::cout << "Server waiting for connections..." << std::endl;
 	while (true){
-		std::cout << "Server waiting for connections." << std::endl;
 		this->_waitForConnections();
-		usleep(1000);
-		std::cout << "Server waiting for connections.." << std::endl;
-		this->_waitForConnections();
-		usleep(1000);
-		std::cout << "Server waiting for connections..." << std::endl;
-		this->_waitForConnections();
-		usleep(1000);
 	}
 }
 
@@ -159,7 +155,7 @@ void	Server::addClient(int const socket, std::string const ip, int const port){
 Server::Server(int port, std::string const& password): _port(port), _password(password){
 	_serverName = DEFAULT_SERVER_NAME;
 	_socketFd = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
-	_clientsFd = NULL;;
+	_clientsFd = NULL;
 	_startTime = timeString();
 	_commands = new CommandsUse(this);
 	this->IRC();

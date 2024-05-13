@@ -51,7 +51,7 @@ void	CommandsUse::handle(Client* client, std::string const& message){
 		}
 		catch(const std::out_of_range &e){
 			if (command != "CAP")
-				std::cout << "Unkown command: " << command <<  " client: " << client << std::endl;  
+				client->sendMsg(ERR_UNKNOWNCOMMAND(client->getNickname(), command));
 		}
 	}
 }

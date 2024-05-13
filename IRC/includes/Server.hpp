@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:46:32 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/08 15:02:11 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/13 12:10:36 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ class Server: public Error{
 		int						_socketFd;
 		std::vector<Client *>	_clientsReady;
 		std::vector<Channel*>	_channels;
-		pollfd*					_clientsFd;
+		struct pollfd*			_clientsFd;
 		CommandsUse*			_commands;
 		std::string				_startTime;
 
