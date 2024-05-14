@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 16:18:07 by qbanet            #+#    #+#             */
-/*   Updated: 2024/05/06 09:59:33 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/14 10:53:01 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,6 @@ void	Client::leaveChan(Channel * chan, bool kicked, std::string const& reason) {
 
 Client::Client(Server * serv, int const socket, std::string const &ip, int const port)
 				: _socket(socket), _port(port), _hostname(ip), _passwordOk(false), _serv(serv) {
-
-	std::clog << "Client " << "crée avec le socket -> " << socket << std::endl;
 }
 
 

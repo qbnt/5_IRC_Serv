@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/13 13:24:10 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/14 10:52:37 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,28 +33,28 @@ void	Server::_createClientFds(void){
 }
 
 void	Server::_acceptConnection(){
-	// struct sockaddr_in6	address;
-	// socklen_t			addrlen = sizeof(address);
-	// int					newsockfd = accept(this->_socketFd, (struct sockaddr*)&address, (socklen_t*)&addrlen);
-	// if (newsockfd < 0){
-	// 	std::cout << "Error: couldn't accept connection." << std::endl;
-	// 	return ;
-	// }
-	// //we got a connection so we add the client to the list
-	// char str_ipv6_addr[INET6_ADDRSTRLEN];
-	// this->addClient(newsockfd, inet_ntop(AF_INET6, &address, str_ipv6_addr, INET6_ADDRSTRLEN), DEFAULT_PORT);
-	// std::cout << "server: connection received from: " << inet_ntop(AF_INET6, &address, str_ipv6_addr, INET6_ADDRSTRLEN) 
-	// 	<< " port: " << ntohs(address.sin6_port) << std::endl;
+	struct sockaddr_in6	address;
+	socklen_t			addrlen = sizeof(address);
+	int					newsockfd = accept(this->_socketFd, (struct sockaddr*)&address, (socklen_t*)&addrlen);
+	if (newsockfd < 0){
+		std::cout << "Error: couldn't accept connection." << std::endl;
+		return ;
+	}
+	//we got a connection so we add the client to the list
+	char str_ipv6_addr[INET6_ADDRSTRLEN];
+	this->addClient(newsockfd, inet_ntop(AF_INET6, &address, str_ipv6_addr, INET6_ADDRSTRLEN), DEFAULT_PORT);
+	std::cout << "server: connection received from: " << inet_ntop(AF_INET6, &address, str_ipv6_addr, INET6_ADDRSTRLEN) 
+		<< " port: " << ntohs(address.sin6_port) << std::endl;
 
-	int socket;
-	do{
-		struct sockaddr_in6 address;
-		socklen_t addrlen = sizeof(address);
-		socket = accept(this->_socketFd, (struct sockaddr*)&address, (socklen_t*)&addrlen);
-		if (socket < 0)
-			break;
-		this->addClient(socket, ft_inet_ntop6(&address.sin6_addr), ntohs(address.sin6_port));
-	}while (socket != -1);
+	// int socket;
+	// do{
+	// 	struct sockaddr_in6 address;
+	// 	socklen_t addrlen = sizeof(address);
+	// 	socket = accept(this->_socketFd, (struct sockaddr*)&address, (socklen_t*)&addrlen);
+	// 	if (socket < 0)
+	// 		break;
+	// 	this->addClient(socket, ft_inet_ntop6(&address.sin6_addr), ntohs(address.sin6_port));
+	// }while (socket != -1);
 }
 
 void	Server::_parsMessage(std::string msg, Client* client){
@@ -77,6 +77,7 @@ void	Server::_clientMessage(Client*	client){
 			break;
 		}
 		if (!res){
+			std::cout << "delete client" << std::endl;
 			this->deleteClient(client->getClientSocket());
 			break;
 		}
@@ -122,16 +123,21 @@ void	Server::IRC(){
 	adress.sin6_family = AF_INET6;
 	adress.sin6_addr = in6addr_any;
 	adress.sin6_port = htons(this->_port);
-	if (bind(this->_socketFd, (struct sockaddr*)&adress, adresslen) < 0)
-		throw(Bind());
+	if (bind(this->_socketFd, (struct sockaddr*)&adress, adresslen) < 0){
+		std::cout << "Error: Couldn't bind socket" << std::endl;
+		close(this->_socketFd);
+		return ;
+	}
 
 	std::cout << "ircserv connected on port: " << this->_port << std::endl;
 
 	//creation of clientFd vector and listen loop
-	this->_createClientFds();
-	if (listen(_socketFd, 32) < 0)
-		throw(Listen());
+	if (listen(_socketFd, 32) < 0){
+		std::cout << "Error: Cannot lisent socket" << std::endl;
+		return ;
+	}
 	std::cout << "Server waiting for connections..." << std::endl;
+	this->_createClientFds();
 	while (true){
 		this->_waitForConnections();
 	}
@@ -147,7 +153,7 @@ Client*	Server::getClient(std::string const& cl){
 	return NULL;
 }
 
-void	Server::addClient(int const socket, std::string const ip, int const port){
+int	Server::addClient(int socket, std::string ip, int port){
 	std::string newip = ip;
 	if (newip.find("::ffff:") != std::string::npos)
 		newip = newip.substr(7);
@@ -158,6 +164,7 @@ void	Server::addClient(int const socket, std::string const ip, int const port){
 	this->_clientsReady.push_back(new Client(this, socket, newip, port));
 	this->_setNonBlocking(socket);
 	this->_createClientFds();
+	return (_clientsReady.size());
 }
 
 Server::Server(int port, std::string const& password): _port(port), _password(password){

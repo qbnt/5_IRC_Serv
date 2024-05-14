@@ -6,33 +6,34 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 09:49:14 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/13 13:22:59 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/13 15:20:29 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-# include "iostream"
-# include "stdlib.h"
-# include "string.h"
-# include <sys/socket.h>
-# include <netinet/in.h>
-# include <arpa/inet.h>
+# include <stdio.h>
+# include <string>
+# include <cstring>
+# include <fcntl.h>
+# include <stdlib.h>
+# include <ctime>
+# include <errno.h>
 # include <unistd.h>
-# include "netinet/in.h"
-# include "netdb.h"
-# include "csignal"
-# include "signal.h"
-# include "sys/stat.h"
-# include "numeric"
-# include "sstream"
-# include "fcntl.h"
-# include "poll.h"
-# include "vector"
-# include "map"
-# include "sys/time.h"
-# include "ctime"
-# include "stdio.h"
+# include <arpa/inet.h>
+# include <sys/types.h>
+# include <sys/socket.h>
+# include <sys/ioctl.h>
+# include <sys/poll.h>
+# include <netinet/in.h>
+# include <sys/time.h>
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <sstream>
+#include <string>
+#include <numeric>
 
 # include "Channel.hpp"
 # include "Client.hpp"

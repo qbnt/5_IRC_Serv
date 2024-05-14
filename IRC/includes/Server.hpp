@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:46:32 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/13 12:10:36 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/13 15:24:47 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ class Server: public Error{
 
 		void		IRC();
 		ssize_t		send(std::string, int) 											const;
-		void		addClient(int const, std::string const, int const);
+		int			addClient(int, std::string, int);
 		int			deleteClient(int);
 		void		broadcast(std::string const&) 									const;
 		void		broadcast(std::string const&, int) 								const;
