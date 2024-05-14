@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PrivMsgCommand.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 12:24:16 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/06 13:11:15 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/14 13:19:14 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@ PrivMsgCommand::PrivMsgCommand(Server* serv): Command(serv){}
 PrivMsgCommand::~PrivMsgCommand(){}
 
 void	PrivMsgCommand::execute(Client* client, std::vector<std::string> arguments){
-	if (arguments.empty() || arguments[0].empty() || arguments[1].empty()){
+	if (arguments.size() < 2 || arguments[0].empty() || arguments[1].empty()){
 		client->sendMsg(ERR_NEEDMOREPARAMS(client->getPref(), "PRIVMSG"));
+		return ;
 	}
 	std::string	target = arguments[0];
 	std::string	message;

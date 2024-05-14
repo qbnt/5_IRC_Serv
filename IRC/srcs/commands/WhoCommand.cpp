@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   WhoCommand.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 15:10:07 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/06 15:32:22 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/14 12:24:29 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	WhoCommand::execute(Client* client, std::vector<std::string> arguments){
 				for (unsigned int i = 0; i < clients.size(); i++){
 					client->sendMsg(RPL_WHOREPLY(client->getNickname(), channelName, clients[i]->getUsername(), clients[i]->getHostname(), this->_server->getServerName(), clients[i]->getNickname(), clients[i]->getRealname()));
 				}
-			}			
+			}
 		}
 	}
 	client->sendMsg(RPL_ENDOFWHO(client->getNickname(), channelName));

@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 14:57:16 by qbanet            #+#    #+#             */
-/*   Updated: 2024/05/03 12:32:53 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/14 12:47:05 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@
 #define RPL_LIST(source, channel, nbUsers, topic)		"322 " + source + " " + channel + " " + nbUsers + " :" + topic
 #define RPL_LISTEND(source)					"323 " + source + " :End of LIST"
 
-#define RPL_MOTDSTART(source, servername)					"375" + source + " :- " + servername + " Message of the day -"
-#define RPL_MOTD(source, line)								"372" + source + line
-#define RPL_ENDOFMOTD(source)								"376" + source + " :End of MOTD command"
+#define RPL_MOTDSTART(source, servername)					"375 " + source + " :- " + servername + " Message of the day -"
+#define RPL_MOTD(source, line)								"372 " + source + line
+#define RPL_ENDOFMOTD(source)								"376 " + source + " :End of MOTD command"
 
 // COMMAND REPLIES
 

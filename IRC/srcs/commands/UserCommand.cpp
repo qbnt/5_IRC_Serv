@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   UserCommand.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 15:06:19 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/06 15:10:05 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/14 12:20:29 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	UserCommand::execute(Client* client, std::vector<std::string> arguments){
 		client->sendMsg(ERR_ALREADYREGISTERED(client->getPref()));
 		return ;
 	}
-	if (arguments.size() > 0){
+	if (arguments.size() < 4){
 		client->sendMsg(ERR_NEEDMOREPARAMS(client->getPref(), "USER"));
 		return ;
 	}

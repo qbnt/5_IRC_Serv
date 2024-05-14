@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 16:18:07 by qbanet            #+#    #+#             */
-/*   Updated: 2024/05/14 10:53:01 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/14 13:06:26 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 
 bool	Client::isOk() const {
 
-	if (getNickname().empty() || getUsername().empty() || getRealname().empty() || !isPasswordOK())
-		return false;
-	return true;
+	if (!this->getNickname().empty() && !this->getUsername().empty() && !this->getRealname().empty() && this->_passwordOk)
+		return (true);
+	return (false);
 }
 
 void	Client::send(const std::string & msg) const {
@@ -40,8 +40,9 @@ std::string const	Client::getPref() const {
 
 void	Client::linkSetMsg() const {
 
-	if(!isOk())
+	if(!isOk()) {
 		return ;
+	}
 	sendMsg(RPL_WELCOME(getNickname(), getHostname()));
 	sendMsg(RPL_YOURHOST(getNickname(), _serv->getServerName(), VERSION));
 	sendMsg(RPL_CREATED(getNickname(), _serv->getStartTime()));
@@ -90,8 +91,8 @@ void	Client::leaveChan(Channel * chan, bool kicked, std::string const& reason) {
 
 //----------------------------Constructs & Destruct---------------------------||
 
-Client::Client(Server * serv, int const socket, std::string const &ip, int const port)
-				: _socket(socket), _port(port), _hostname(ip), _passwordOk(false), _serv(serv) {
+Client::Client(Server * serv, int const socket, std::string const &hostname, int const port)
+				: _socket(socket), _port(port), _hostname(hostname), _passwordOk(false), _serv(serv) {
 }
 
 

@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 15:56:02 by qbanet            #+#    #+#             */
-/*   Updated: 2024/05/08 13:53:04 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/14 12:58:15 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ Client *	Channel::getClient(std::string const &pseudo) {
 //---------------------------Construct & Destructs----------------------------||
 
 Channel::Channel(std::string const &nm, std::string const &pw, Client *adm, Server *serv)
-				: _name(nm), _maxUsr(42), _password(pw), _serv(serv), _admin(adm) {}
+				: _name(nm), _maxUsr(42), _inviteMode(false), _password(pw), _serv(serv), _admin(adm) {}
 
 Channel::~Channel() {
 	// TODO: Ajouter la libération de mémoire si besoin

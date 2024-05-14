@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/14 11:19:45 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:09:56 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	Server::_acceptConnection(){
 	//we got a connection so we add the client to the list
 	char str_ipv6_addr[INET6_ADDRSTRLEN];
 	this->addClient(newsockfd, inet_ntop(AF_INET6, &address, str_ipv6_addr, INET6_ADDRSTRLEN), DEFAULT_PORT);
-	std::cout << "server: connection received from: " << inet_ntop(AF_INET6, &address, str_ipv6_addr, INET6_ADDRSTRLEN) 
+	std::cout << "server: connection received from: " << inet_ntop(AF_INET6, &address, str_ipv6_addr, INET6_ADDRSTRLEN)
 		<< " port: " << ntohs(address.sin6_port) << std::endl;
 }
 
@@ -63,9 +63,14 @@ void	Server::_clientMessage(Client*	client){
 	while (true){
 		int	res = recv(client->getClientSocket(), buff, BUFFER_SIZE + 1, 0);
 		if (res < 0){
+			if (errno != EWOULDBLOCK)
+			{
+				std::cout << "Error: recv() failed for fd " << client->getClientSocket();
+				this->deleteClient(client->getClientSocket());
+			}
 			break;
 		}
-		if (!res){
+		else if (!res){
 			this->deleteClient(client->getClientSocket());
 			break;
 		}
@@ -219,7 +224,7 @@ Channel*	Server::createChannel(std::string const& name, std::string const& pass,
 
 void	Server::broadcastChannel(std::string const& msg, int fd_exclude, Channel const* channel) const{
 	std::vector<Client*> clients = channel->getClients();
-	
+
 	for (unsigned int i = 0; i < clients.size(); i++){
 		if (clients[i]->getClientSocket() == fd_exclude)
 			this->send(msg, clients[i]->getClientSocket());
@@ -228,7 +233,7 @@ void	Server::broadcastChannel(std::string const& msg, int fd_exclude, Channel co
 
 void	Server::broadcastChannel(std::string const& msg, Channel const* channel) const{
 	std::vector<Client*> clients = channel->getClients();
-	
+
 	for (unsigned int i = 0; i < clients.size(); i++){
 			this->send(msg, clients[i]->getClientSocket());
 	}
@@ -236,7 +241,7 @@ void	Server::broadcastChannel(std::string const& msg, Channel const* channel) co
 
 int	Server::deleteClient(int socket){
 	std::string empty = "";
-	
+
 	for (unsigned int i = 0; i < this->_clientsReady.size(); i++){
 		if (this->_clientsReady[i]->getClientSocket() == socket){
 			for (unsigned int j = 0; j < _channels.size(); j++){
