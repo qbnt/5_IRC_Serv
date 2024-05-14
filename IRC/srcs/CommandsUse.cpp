@@ -31,12 +31,12 @@ void	CommandsUse::handle(Client* client, std::string const& message){
 	std::stringstream	sstring(message);
 	std::string			SplitCommand;
 
-	std::cout << message << std::endl;
 	while (std::getline(sstring, SplitCommand)){
 		if (SplitCommand.length() == '\r')
 			SplitCommand = SplitCommand.substr(0, SplitCommand.length() - 1);
 		else
 			SplitCommand = SplitCommand.substr(0, SplitCommand.length());
+		std::cout << SplitCommand << std::endl;
 		std::string	command = SplitCommand.substr(0, SplitCommand.find(' '));
 		try{
 			Command*	ccomand = _comMap.at(command);
@@ -57,4 +57,5 @@ void	CommandsUse::handle(Client* client, std::string const& message){
 				client->sendMsg(ERR_UNKNOWNCOMMAND(client->getNickname(), command));
 		}
 	}
+	std::cout << "here" << std::endl;
 }

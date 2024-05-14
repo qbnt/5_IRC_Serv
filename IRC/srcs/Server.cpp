@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/14 10:52:37 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/14 11:16:37 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	Server::_acceptConnection(){
 void	Server::_parsMessage(std::string msg, Client* client){
 	if (msg.at(msg.size() - 1) == '\n'){
 		std::vector<std::string> cmd = ft_split(client->getMessage() + msg, '\n');
+		client->setMessage("");
 		for (std::vector<std::string>::iterator it = cmd.begin(); it != cmd.end(); it++)
 			this->_commands->handle(client, *it);
 	}
@@ -72,12 +73,9 @@ void	Server::_clientMessage(Client*	client){
 	while (true){
 		int	res = recv(client->getClientSocket(), buff, BUFFER_SIZE + 1, 0);
 		if (res < 0){
-			std::cout << "Error: recv() from client: " << client->getClientSocket();
-			this->deleteClient(client->getClientSocket());
 			break;
 		}
 		if (!res){
-			std::cout << "delete client" << std::endl;
 			this->deleteClient(client->getClientSocket());
 			break;
 		}
