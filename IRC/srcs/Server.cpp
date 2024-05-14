@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/14 11:16:37 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/14 11:19:45 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,6 @@ void	Server::_acceptConnection(){
 	this->addClient(newsockfd, inet_ntop(AF_INET6, &address, str_ipv6_addr, INET6_ADDRSTRLEN), DEFAULT_PORT);
 	std::cout << "server: connection received from: " << inet_ntop(AF_INET6, &address, str_ipv6_addr, INET6_ADDRSTRLEN) 
 		<< " port: " << ntohs(address.sin6_port) << std::endl;
-
-	// int socket;
-	// do{
-	// 	struct sockaddr_in6 address;
-	// 	socklen_t addrlen = sizeof(address);
-	// 	socket = accept(this->_socketFd, (struct sockaddr*)&address, (socklen_t*)&addrlen);
-	// 	if (socket < 0)
-	// 		break;
-	// 	this->addClient(socket, ft_inet_ntop6(&address.sin6_addr), ntohs(address.sin6_port));
-	// }while (socket != -1);
 }
 
 void	Server::_parsMessage(std::string msg, Client* client){
