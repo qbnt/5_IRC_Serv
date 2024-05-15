@@ -23,7 +23,6 @@ CommandsUse::CommandsUse(Server* serv): _server(serv){
 CommandsUse::~CommandsUse(){
 	for (std::map<std::string, Command*>::iterator i = _comMap.begin(); i != _comMap.end(); i++){
 		delete i->second;
-		_comMap.erase(i);
 	}
 }
 
@@ -36,7 +35,6 @@ void	CommandsUse::handle(Client* client, std::string const& message){
 			SplitCommand = SplitCommand.substr(0, SplitCommand.length() - 1);
 		else
 			SplitCommand = SplitCommand.substr(0, SplitCommand.length());
-		std::cout << SplitCommand << std::endl;
 		std::string	command = SplitCommand.substr(0, SplitCommand.find(' '));
 		try{
 			Command*	ccomand = _comMap.at(command);

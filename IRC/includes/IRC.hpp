@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IRC.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 09:49:14 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/13 15:20:29 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/15 10:56:51 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,14 @@
 # include <sys/poll.h>
 # include <netinet/in.h>
 # include <sys/time.h>
-#include <iostream>
-#include <string>
-#include <vector>
-#include <map>
-#include <sstream>
-#include <string>
-#include <numeric>
+# include <iostream>
+# include <string>
+# include <vector>
+# include <map>
+# include <sstream>
+# include <string>
+# include <numeric>
+# include <csignal>
 
 # include "Channel.hpp"
 # include "Client.hpp"

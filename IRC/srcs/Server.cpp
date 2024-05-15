@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/15 10:20:09 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/15 11:29:26 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	Server::_clientMessage(Client*	client){
 		if (res < 0){
 			if (errno != EWOULDBLOCK)
 			{
-				std::cout << "Error: recv() failed for fd " << client->getClientSocket();
+				std::cout << "Error: recv() failed for fd " << client->getClientSocket() << std::endl;
 				this->deleteClient(client->getClientSocket());
 			}
 			break;
@@ -84,8 +84,10 @@ void	Server::_clientMessage(Client*	client){
 
 void	Server::_waitForConnections(){
 	int	socketActivity = poll(this->_clientsFd, this->_clientsReady.size() + 1, -1);
-	if (socketActivity < 0)
+	if (socketActivity < 0){
 		std::cout << "Error: No socket activity." << std::endl;
+		return ;
+	}
 
 	for (unsigned int i = 0; i < _clientsReady.size() + 1; i++){
 		//if revents == 0 that means that there is no activity
@@ -99,6 +101,13 @@ void	Server::_waitForConnections(){
 			this->_clientMessage(client);
 		}
 	}
+}
+
+int stop = 1;
+
+void	signalHandler(int signal){
+	if (signal == SIGINT)
+		stop = 0;
 }
 
 void	Server::IRC(){
@@ -133,9 +142,9 @@ void	Server::IRC(){
 	}
 	std::cout << "Server waiting for connections..." << std::endl;
 	this->_createClientFds();
-	while (true){
+	signal(SIGINT, signalHandler);
+	while (stop)
 		this->_waitForConnections();
-	}
 }
 
 Client*	Server::getClient(std::string const& cl){
@@ -172,10 +181,8 @@ Server::Server(int port, std::string const& password): _port(port), _password(pa
 }
 
 Server::~Server(){
-	for (unsigned int i = 0; i < _clientsReady.size(); i++)
-		delete this->_clientsReady[i];
-	for (unsigned int i = 0; i < _channels.size(); i++)
-		delete this->_channels[i];
+	_clientsReady.clear();
+	_channels.clear();
 	delete this->_commands;
 	delete [] this->_clientsFd;
 	close(_socketFd);
