@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/14 14:09:56 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/15 10:20:09 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	Server::_waitForConnections(){
 
 	for (unsigned int i = 0; i < _clientsReady.size() + 1; i++){
 		//if revents == 0 that means that there is no activity
-		if (this->_clientsFd[i].revents == 0)
+		if (i < _clientsReady.size() && this->_clientsFd[i].revents == 0)
 			continue;
 		if (this->_clientsFd[i].fd == this->_socketFd) //if there is some activity, we treat it as a connection
 			this->_acceptConnection();
@@ -116,6 +116,8 @@ void	Server::IRC(){
 	adress.sin6_family = AF_INET6;
 	adress.sin6_addr = in6addr_any;
 	adress.sin6_port = htons(this->_port);
+	adress.sin6_flowinfo = 0;
+	adress.sin6_scope_id = 0;
 	if (bind(this->_socketFd, (struct sockaddr*)&adress, adresslen) < 0){
 		std::cout << "Error: Couldn't bind socket" << std::endl;
 		close(this->_socketFd);
