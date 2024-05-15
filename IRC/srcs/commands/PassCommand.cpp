@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 11:49:17 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/14 12:35:44 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/15 19:42:57 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	PassCommand::execute(Client* client, std::vector<std::string> arguments){
 		client->sendMsg(ERR_PASSWDMISMATCH(client->getPref()));
 		return ;
 	}
-	std::cout << "Pass ok" << std::endl;
 	client->setPasswordOk(true);
 	client->linkSetMsg();
 }

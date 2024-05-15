@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/15 11:29:26 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/15 19:48:32 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	Server::_clientMessage(Client*	client){
 		else{
 			buff[res] = '\0';
 			std::string msg = buff;
+			std::cout << msg << std::endl;
 			_parsMessage(msg, client);
 		}
 	}

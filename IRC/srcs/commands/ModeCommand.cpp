@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 11:46:47 by qbanet            #+#    #+#             */
-/*   Updated: 2024/05/08 13:37:00 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/15 20:40:04 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void ModeCommand::execute(Client *usr, std::vector<std::string> args)
 		usr->sendMsg(ERR_NOSUCHCHANNEL(usr->getNickname(), target));
 		return;
 	}
+
+	// check if admin or chanop
 	if (channel->getAdmin() != usr && !channel->isOp(usr))
 	{
 		usr->sendMsg(ERR_CHANOPRIVSNEEDED(usr->getNickname(), target));
@@ -56,6 +58,8 @@ void ModeCommand::execute(Client *usr, std::vector<std::string> args)
 			}
 
 			case 'l': {
+				if (args.size() == 2)
+					break;
 				channel->setMaxUsr(active ? std::atoi(args[p].c_str()) : 0);
 				channel->diff(RPL_MODE(usr->getPref(), channel->getName(), (active ? "+l" : "-l"), (active ? args[p] : "")));
 				p += active ? 1 : 0;
@@ -63,6 +67,8 @@ void ModeCommand::execute(Client *usr, std::vector<std::string> args)
 			}
 
 			case 'k': {
+				if (args.size() == 2)
+					break;
 				channel->setPassword(active ? args[p] : "");
 				channel->diff(RPL_MODE(usr->getPref(), channel->getName(), (active ? "+k" : "-k"), (active ? args[p] : "")));
 				p += active ? 1 : 0;
@@ -70,6 +76,8 @@ void ModeCommand::execute(Client *usr, std::vector<std::string> args)
 			}
 
 			case 'o': {
+				if (args.size() == 2)
+					break;
 				Client *c_tar = channel->getClient(args[p]);
 				if (!c_tar)
 				{

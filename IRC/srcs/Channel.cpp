@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 15:56:02 by qbanet            #+#    #+#             */
-/*   Updated: 2024/05/14 12:58:15 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/15 20:47:58 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,12 @@
 
 void	Channel::diff(std::string const & msg) {
 
-	ChanIter it;
-	for(it = _clients.begin(); it != _clients.end(); it++) {
-		(*it)->send(msg);
-	}
+	this->_serv->broadcastChannel(msg, this);
 }
 
 void Channel::diff(const std::string &message, Client *exclude) {
 
-	std::vector<Client *>::iterator it;;
-	for (it = _clients.begin(); it != _clients.end(); it++)
-	{
-		if (*it == exclude)
-			continue;
-		(*it)->sendMsg(message);
-	}
+	this->_serv->broadcastChannel(message, exclude->getClientSocket(), this);
 }
 
 void	Channel::addUser(Client *usr) {
@@ -49,13 +40,14 @@ void	Channel::removeUser(Client *usr, std::string reason) {
 	reason.clear();
 
 	if (!_op.empty())
-		_op.erase(this->_op.begin() + this->clientIndex(_op, usr));
+		_op.erase(this->_op.begin() + this->_clientIndex(_op, usr));
 	if (!_clients.empty())
-		_clients.erase(this->_clients.begin() + this->clientIndex(_clients, usr));
-	usr->leaveChan(this, false, reason);
+		_clients.erase(this->_clients.begin() + this->_clientIndex(_clients, usr));
+	usr->leaveChan(this, 1, reason);
 
-	if (_clients.empty())
+	if (_clients.empty()) {
 		return;
+	}
 
 	if (_admin == usr)
 		_admin = _clients.begin().operator*();
@@ -91,22 +83,34 @@ void	Channel::kick(Client *origin, Client *target, std::string reason) {
 
 bool	Channel::isInChan(Client const * usr) {
 
-	for (ChanIter it = _clients.begin(); it != _clients.end(); it ++) {
+	std::vector<Client *>::iterator it = _clients.begin();
+
+	while (it != _clients.end())
+	{
 		if (*it == usr)
 			return true;
+		it++;
 	}
 	return false;
+
 }
 
 bool	Channel::isOp(Client const * usr) {
 
-	ChanIter it;
-	for (it = _op.begin(); it != _op.end(); it++) {
-		Client *op = it.operator*();
-		if (op == usr)
+	std::vector<Client *> opers_chan = this->getOp();
+	std::vector<Client *>:: iterator it_oper = opers_chan.begin();
+
+	while (it_oper != opers_chan.end())
+	{
+		Client *oper = it_oper.operator*();
+		if (oper == usr)
 			return true;
+		++it_oper;
 	}
+	if (it_oper == opers_chan.end())
+		return false;
 	return false;
+
 }
 
 unsigned int	Channel::getNbrUsr() {
@@ -125,7 +129,22 @@ std::vector<std::string>	Channel::getAllNickname() {
 	return allNickname;
 }
 
-unsigned long Channel::clientIndex(std::vector<Client *> clients, Client *client)
+unsigned long Channel::clientIndex(std::vector<Client *> clients, Client *usr)
+{
+	unsigned long i = 0;
+	std::vector<Client *>::iterator it = clients.begin();
+
+	while (it != clients.end())
+	{
+		if (*it == usr)
+			return i;
+		it++;
+		i++;
+	}
+	return 0;
+}
+
+unsigned long Channel::_clientIndex(std::vector<Client *> clients, Client *client)
 {
 	unsigned long i = 0;
 	std::vector<Client *>::iterator it = clients.begin();
@@ -151,6 +170,21 @@ Client *	Channel::getClient(std::string const &pseudo) {
 	}
 	return NULL;
 }
+
+std::vector<std::string>	Channel::getNickNames()
+{
+	std::vector<std::string> nicknames;
+	std::vector<Client *>::iterator it = _clients.begin();
+
+	while (it != _clients.end())
+	{
+		Client *usr = it.operator*();
+		nicknames.push_back((_admin == usr ? "@" : "") + (*it)->getNickname());
+		it++;
+	}
+	return nicknames;
+}
+
 
 //---------------------------Construct & Destructs----------------------------||
 

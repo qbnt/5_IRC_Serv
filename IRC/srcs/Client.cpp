@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 16:18:07 by qbanet            #+#    #+#             */
-/*   Updated: 2024/05/14 13:06:26 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/15 20:11:46 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	Client::joinChan(Channel *chan) {
 
 void	Client::leaveChan(Channel * chan, bool kicked, std::string const& reason) {
 
-	if (kicked)
+	if (!kicked)
 		chan->removeUser(this, reason);
 	for (ChanVecIt it = _usrChan.begin(); it != _usrChan.end(); ++it) {
         if (*it == chan) {

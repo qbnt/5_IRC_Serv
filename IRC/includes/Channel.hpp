@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:38:49 by qbanet            #+#    #+#             */
-/*   Updated: 2024/05/08 13:51:27 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/15 20:27:08 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ class Channel {
 		Client *				_admin;
 		std::vector<Client *>	_clients;
 		std::vector<Client *>	_op;
+
+		unsigned long _clientIndex(std::vector<Client *> clients, Client *client);
 
 	public:
 		Channel(std::string const &name, std::string const &password, Client *admin, Server *serv);
@@ -65,6 +67,7 @@ class Channel {
 		std::vector<Client *> const	getClients() const	{return _clients; };
 		std::vector<Client *> const	getOp()	const		{return _op; };
 		Client *					getClient(std::string const &);
+		std::vector<std::string>	getNickNames();
 
 		// * Setteurs
 		void	setName(std::string const &name)		{_name = name; };

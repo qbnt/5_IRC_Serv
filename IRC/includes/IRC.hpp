@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IRC.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 09:49:14 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/15 10:56:51 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/15 20:09:13 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@
 # define DEFAULT_PORT			6667
 # define DEFAULT_SERVER_NAME	"irc.42.fr"
 # define VERSION				"0.42"
-# define USERMODES				""
-# define CHANNELMODES			"tikol"
+# define USERMODES				"aiorsw"
+# define CHANNELMODES			"IObeiklmnopstv"
 # define KICKDEFREASON			"Bha je sais pas lol"
 
 std::vector<std::string>	ft_split(std::string, char);
