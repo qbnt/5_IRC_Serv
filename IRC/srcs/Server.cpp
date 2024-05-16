@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/16 13:51:38 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/16 14:52:42 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,9 @@ void	Server::_parsMessage(std::string msg, Client* client){
 	if (msg.at(msg.size() - 1) == '\n'){
 		std::vector<std::string> cmd = ft_split(client->getMessage() + msg, '\n');
 		client->setMessage("");
-		for (std::vector<std::string>::iterator it = cmd.begin(); it != cmd.end(); it++)
+		for (std::vector<std::string>::iterator it = cmd.begin(); it != cmd.end(); it++) {
 			this->_commands->handle(client, *it);
+		}
 	}
 	else
 		client->setMessage(client->getMessage() + msg);
