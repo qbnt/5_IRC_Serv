@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:38:49 by qbanet            #+#    #+#             */
-/*   Updated: 2024/05/15 20:27:08 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/16 12:29:32 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ class Channel {
 		unsigned long 					clientIndex(std::vector<Client *> clients, Client *client);
 
 		// * Getteurs
-		std::string const &			getName() const		{return _name; };
+		std::string 				getName() 			{return (_name); };
 		unsigned int const &		getMaxUsr() const	{return _maxUsr; };
 		bool const &				getInvMode() const	{return _inviteMode; };
 		std::string const &			getPassword() const	{return _password; };

@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 11:46:47 by qbanet            #+#    #+#             */
-/*   Updated: 2024/05/15 20:40:04 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/16 13:08:16 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,10 @@ void ModeCommand::execute(Client *usr, std::vector<std::string> args)
 			}
 
 			case 'l': {
-				if (args.size() == 2)
+				if (args.size() <= 2 && active) {
+					usr->sendMsg(ERR_NEEDMOREPARAMS(usr->getNickname(), "MODE"));
 					break;
+				}
 				channel->setMaxUsr(active ? std::atoi(args[p].c_str()) : 0);
 				channel->diff(RPL_MODE(usr->getPref(), channel->getName(), (active ? "+l" : "-l"), (active ? args[p] : "")));
 				p += active ? 1 : 0;
@@ -67,8 +69,10 @@ void ModeCommand::execute(Client *usr, std::vector<std::string> args)
 			}
 
 			case 'k': {
-				if (args.size() == 2)
+				if (args.size() <= 2 && active) {
+					usr->sendMsg(ERR_NEEDMOREPARAMS(usr->getNickname(), "MODE"));
 					break;
+				}
 				channel->setPassword(active ? args[p] : "");
 				channel->diff(RPL_MODE(usr->getPref(), channel->getName(), (active ? "+k" : "-k"), (active ? args[p] : "")));
 				p += active ? 1 : 0;
@@ -76,8 +80,10 @@ void ModeCommand::execute(Client *usr, std::vector<std::string> args)
 			}
 
 			case 'o': {
-				if (args.size() == 2)
+				if (args.size() <= 2) {
+					usr->sendMsg(ERR_NEEDMOREPARAMS(usr->getNickname(), "MODE"));
 					break;
+				}
 				Client *c_tar = channel->getClient(args[p]);
 				if (!c_tar)
 				{

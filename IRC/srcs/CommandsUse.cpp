@@ -30,18 +30,16 @@ void	CommandsUse::handle(Client* client, std::string const& message){
 	std::stringstream	sstring(message);
 	std::string			SplitCommand;
 
-	while (std::getline(sstring, SplitCommand)){
-		if (SplitCommand.length() == '\r')
-			SplitCommand = SplitCommand.substr(0, SplitCommand.length() - 1);
-		else
-			SplitCommand = SplitCommand.substr(0, SplitCommand.length());
+	while (std::getline(sstring, SplitCommand)) {
+		SplitCommand = SplitCommand.substr(0, SplitCommand.length() - 1);
 		std::string	command = SplitCommand.substr(0, SplitCommand.find(' '));
-		try{
+		std::cout << command << std::endl;
+		try {
 			Command*	ccomand = _comMap.at(command);
 			std::vector<std::string> commandArguments;
 			std::stringstream	ss(SplitCommand.substr(command.length(), SplitCommand.length()));
 			std::string buff;
-			while (ss >> buff){
+			while (ss >> buff) {
 				commandArguments.push_back(buff);
 			}
 			if (ccomand->getAuth() && !client->isOk()){

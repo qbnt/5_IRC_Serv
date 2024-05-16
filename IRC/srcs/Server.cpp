@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/15 19:48:32 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/16 13:51:38 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ void	Server::_clientMessage(Client*	client){
 		else{
 			buff[res] = '\0';
 			std::string msg = buff;
-			std::cout << msg << std::endl;
 			_parsMessage(msg, client);
 		}
 	}
@@ -236,7 +235,7 @@ void	Server::broadcastChannel(std::string const& msg, int fd_exclude, Channel co
 	std::vector<Client*> clients = channel->getClients();
 
 	for (unsigned int i = 0; i < clients.size(); i++){
-		if (clients[i]->getClientSocket() == fd_exclude)
+		if (clients[i]->getClientSocket() != fd_exclude)
 			this->send(msg, clients[i]->getClientSocket());
 	}
 }

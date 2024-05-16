@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 15:56:02 by qbanet            #+#    #+#             */
-/*   Updated: 2024/05/15 20:47:58 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/16 13:06:13 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	Channel::addOp(Client *newOp) {
 void	Channel::removeOp(Client *usr) {
 
 	std::vector<Client *>::iterator it = _op.begin();
-	while (it != _op.end() || (*it) != usr) {
+	while (it != _op.end() && (*it) != usr) {
 		it ++;
 	}
 	_op.erase(it);
@@ -189,7 +189,7 @@ std::vector<std::string>	Channel::getNickNames()
 //---------------------------Construct & Destructs----------------------------||
 
 Channel::Channel(std::string const &nm, std::string const &pw, Client *adm, Server *serv)
-				: _name(nm), _maxUsr(42), _inviteMode(false), _password(pw), _serv(serv), _admin(adm) {}
+				: _name((nm)), _maxUsr(42), _inviteMode(false), _password(pw), _serv(serv), _admin(adm) {}
 
 Channel::~Channel() {
 	// TODO: Ajouter la libération de mémoire si besoin

@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 16:18:07 by qbanet            #+#    #+#             */
-/*   Updated: 2024/05/15 20:11:46 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/16 12:50:38 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,13 @@ void	Client::linkSetMsg() const {
 	sendMsg(RPL_MYINFO(getNickname(), _serv->getServerName(), VERSION, USERMODES, CHANNELMODES));
 
 	sendMsg(RPL_MOTDSTART(getNickname(), _serv->getServerName()));
+	sendMsg(RPL_MOTD(getNickname(), " :-"));
+	sendMsg(RPL_MOTD(getNickname(), " :-"));
 	sendMsg(RPL_MOTD(getNickname(), " :- #####################################"));
 	sendMsg(RPL_MOTD(getNickname(), " :- # Bienvenue sur notre serveur IRC ! #"));
 	sendMsg(RPL_MOTD(getNickname(), " :- #####################################"));
+	sendMsg(RPL_MOTD(getNickname(), " :-"));
+	sendMsg(RPL_MOTD(getNickname(), " :-"));
 	sendMsg(RPL_ENDOFMOTD(getNickname()));
 }
 

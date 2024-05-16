@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 12:24:16 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/15 20:01:23 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/16 12:43:35 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,21 +48,19 @@ void	PrivMsgCommand::execute(Client* client, std::vector<std::string> arguments)
 		}
 		if (it == client_chans.end())
 		{
-			_server->broadcast(ERR_NOTONCHANNEL(client->getNickname(), target));
+			client->sendMsg(ERR_NOTONCHANNEL(client->getNickname(), target));
 			return;
 		}
 
 		chan->diff(RPL_PRIVMSG(client->getPref(), target, message), client);
 		return;
+	} else {
+		Client *dest = _server->getClient(target);
+		if (!dest)
+		{
+			client->sendMsg(ERR_NOSUCHNICK(client->getNickname(), target));
+			return;
+		}
+		dest->send(RPL_PRIVMSG(client->getPref(), target, message));
 	}
-
-	Client *dest = _server->getClient(target);
-	if (!dest)
-	{
-		client->sendMsg(ERR_NOSUCHNICK(client->getNickname(), target));
-		return;
-	}
-
-	dest->send(RPL_PRIVMSG(client->getPref(), target, message));
-
 }
