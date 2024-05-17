@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 09:49:14 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/15 20:09:13 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/17 18:20:25 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,6 @@
 # define CHANNELMODES			"IObeiklmnopstv"
 # define KICKDEFREASON			"Bha je sais pas lol"
 
-std::vector<std::string>	ft_split(std::string, char);
+std::vector<std::string> 	ft_split(const std::string& str, char c);
 std::string					timeString(void);
 std::string 				ft_inet_ntop6(const void *a0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 09:49:50 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/13 13:22:01 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/17 18:19:06 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,18 +57,25 @@ std::string	timeString(){
 	return (buff);
 }
 
-std::vector<std::string>	ft_split(std::string str, char c){
-	std::vector<std::string>	cmd;
-	int j = 0;
-	if (str.empty())
-		cmd.push_back("");
-	for (size_t i = 0; i < str.size(); i++){
-		while (str[i] && str[i] != c)
-			i++;
-		cmd.push_back(str.substr(j, i));
-		j += i;
-	}
-	return (cmd);
+std::vector<std::string> ft_split(const std::string& str, char c) {
+    std::vector<std::string> cmd;
+    size_t start = 0;
+    size_t end = 0;
+
+    while (end < str.size()) {
+        while (end < str.size() && str[end] != c) {
+            end++;
+        }
+        cmd.push_back(str.substr(start, end - start));
+        end++;
+        start = end;
+    }
+
+    if (start < str.size() || (start == str.size() && !str.empty() && str[str.size() - 1] == c)) {
+        cmd.push_back("");
+    }
+
+    return cmd;
 }
 
 int	allDigits(char *ag){

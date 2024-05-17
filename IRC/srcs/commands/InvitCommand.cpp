@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 11:43:41 by qbanet            #+#    #+#             */
-/*   Updated: 2024/05/06 12:31:56 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/17 17:13:54 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ void	InvitCommand::execute(Client *usr, std::vector<std::string> args) {
 	std::string chanName = args[1];
 
 	Channel* chan = _server->getChannel(chanName);
-	if (!chan || !chan->getClient(usr->getNickname())) {
+	if (!chan) {
+		return ;
+	}
+	if (!chan->getClient(usr->getNickname())) {
 		usr->sendMsg(ERR_NOTONCHANNEL(usr->getNickname(), chan->getName()));
 		return ;
 	}

@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/16 14:52:42 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/17 18:22:12 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	Server::_acceptConnection(){
 void	Server::_parsMessage(std::string msg, Client* client){
 	if (msg.at(msg.size() - 1) == '\n'){
 		std::vector<std::string> cmd = ft_split(client->getMessage() + msg, '\n');
+
 		client->setMessage("");
 		for (std::vector<std::string>::iterator it = cmd.begin(); it != cmd.end(); it++) {
 			this->_commands->handle(client, *it);
@@ -59,23 +60,21 @@ void	Server::_parsMessage(std::string msg, Client* client){
 		client->setMessage(client->getMessage() + msg);
 }
 
-void	Server::_clientMessage(Client*	client){
+void	Server::_clientMessage(Client*	client) {
+
 	char buff[BUFFER_SIZE + 1];
 	while (true){
-		int	res = recv(client->getClientSocket(), buff, BUFFER_SIZE + 1, 0);
-		if (res < 0){
-			if (errno != EWOULDBLOCK)
-			{
+		int	res = recv(client->getClientSocket(), buff, sizeof(buff), 0);
+		if (res < 0) {
+			if (errno != EWOULDBLOCK) {
 				std::cout << "Error: recv() failed for fd " << client->getClientSocket() << std::endl;
 				this->deleteClient(client->getClientSocket());
 			}
 			break;
-		}
-		else if (!res){
+		} else if (!res) {
 			this->deleteClient(client->getClientSocket());
 			break;
-		}
-		else{
+		} else {
 			buff[res] = '\0';
 			std::string msg = buff;
 			_parsMessage(msg, client);

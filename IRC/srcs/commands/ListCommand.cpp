@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 11:46:43 by qbanet            #+#    #+#             */
-/*   Updated: 2024/05/16 15:01:26 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/17 18:22:35 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ void ListCommand::execute(Client *usr, std::vector<std::string> args) {
 
 	for(unsigned long i = 0; i < chans.size(); i++) {
 		if (args.empty() || isInChannelsList(chans[i], channelNames)) {
-			std::cout << usr->getNickname() << std::endl;
-			std::cout << RPL_LIST(usr->getNickname(), chans[i]->getName(), intToString(chans[i]->getClients().size()), "No topic is set") << std::endl;
 			usr->sendMsg(RPL_LIST(usr->getNickname(), chans[i]->getName(), intToString(chans[i]->getClients().size()), "No topic is set"));
 		}
 	}

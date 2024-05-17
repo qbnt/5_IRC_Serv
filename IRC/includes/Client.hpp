@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:50:22 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/13 13:04:38 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/17 17:52:37 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ class Client{
 		std::string const &				getNickname() const	{return _nickname; };
 		std::string const & 			getUsername() const	{return _username; };
 		std::string const &				getRealname() const	{return _realname; };
-		std::string const &				getMessage() const	{return _message;};
+		std::string const &				getMessage()  const	{return _message;};
 
 		// * Setters
 		void		setMessage(std::string const & ps)		{_message = ps;};

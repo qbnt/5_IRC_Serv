@@ -31,12 +31,9 @@ void	CommandsUse::handle(Client* client, std::string const& message){
 	std::string			SplitCommand;
 
 	while (std::getline(sstring, SplitCommand)) {
-		if (SplitCommand.length() == '\r')
-			SplitCommand = SplitCommand.substr(0, SplitCommand.length() - 1);
-		else
-			SplitCommand = SplitCommand.substr(0, SplitCommand.length());
+
+		SplitCommand = SplitCommand.substr(0, SplitCommand[SplitCommand.length() - 1] == '\r' ? SplitCommand.length() - 1 : SplitCommand.length());
 		std::string	command = SplitCommand.substr(0, SplitCommand.find(' '));
-		std::cout << "Command: " << command << std::endl;
 		try {
 			Command*	ccomand = _comMap.at(command);
 			std::vector<std::string> commandArguments;
@@ -44,7 +41,6 @@ void	CommandsUse::handle(Client* client, std::string const& message){
 			std::string buff;
 			while (ss >> buff) {
 				commandArguments.push_back(buff);
-				std::cout << "args: " << buff << std::endl;
 			}
 			if (ccomand->getAuth() && !client->isOk()){
 				client->sendMsg(ERR_NOTREGISTERED(client->getNickname()));
