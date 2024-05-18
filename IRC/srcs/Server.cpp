@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/17 18:22:12 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/18 14:04:59 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,11 @@ void	Server::_createClientFds(void){
 	this->_clientsFd = new struct pollfd[this->_clientsReady.size() + 1];
 	this->_clientsFd[0].fd = this->_socketFd;
 	this->_clientsFd[0].events = POLLIN;
+	this->_clientsFd[0].revents = 0;
 	for (size_t i = 0; i < this->_clientsReady.size(); i++){
 		this->_clientsFd[i + 1].fd = this->_clientsReady[i]->getClientSocket();
 		this->_clientsFd[i + 1].events = POLLIN;
+		this->_clientsFd[i + 1].revents = 0;
 	}
 }
 
@@ -63,7 +65,7 @@ void	Server::_parsMessage(std::string msg, Client* client){
 void	Server::_clientMessage(Client*	client) {
 
 	char buff[BUFFER_SIZE + 1];
-	while (true){
+	while (true) {
 		int	res = recv(client->getClientSocket(), buff, sizeof(buff), 0);
 		if (res < 0) {
 			if (errno != EWOULDBLOCK) {
@@ -83,22 +85,29 @@ void	Server::_clientMessage(Client*	client) {
 }
 
 void	Server::_waitForConnections(){
-	int	socketActivity = poll(this->_clientsFd, this->_clientsReady.size() + 1, -1);
+
+	int	socketActivity = poll(this->_clientsFd, this->_clientsReady.size() + 1, - 1);
 	if (socketActivity < 0){
 		std::cout << "Error: No socket activity." << std::endl;
 		return ;
 	}
 
-	for (unsigned int i = 0; i < _clientsReady.size() + 1; i++){
-		//if revents == 0 that means that there is no activity
-		if (i < _clientsReady.size() && this->_clientsFd[i].revents == 0)
-			continue;
-		if (this->_clientsFd[i].fd == this->_socketFd) //if there is some activity, we treat it as a connection
+	for (unsigned int i = 0; i < _clientsReady.size() + 1; i++) {
+		std::cout << i << std::endl;
+		short revents = this->_clientsFd[i].revents;
+        if (revents == 0) {
+            continue;
+        }
+		if (this->_clientsFd[i].fd == this->_socketFd) {
 			this->_acceptConnection();
-		//we take the message from the last client
-		else if (i > 0){
+		} else if (i > 0) {
 			Client*	client = this->_clientsReady[i - 1];
-			this->_clientMessage(client);
+			if (revents & POLLIN) {
+                    _clientMessage(client);
+                } else if (revents & (POLLERR | POLLHUP | POLLNVAL)) {
+                    std::cerr << "Erreur : Problème avec fd " << _clientsFd[i].fd << std::endl;
+                    deleteClient(_clientsFd[i].fd);
+				}
 		}
 	}
 }

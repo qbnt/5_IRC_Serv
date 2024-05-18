@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:50:22 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/17 17:52:37 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/18 14:02:18 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef typename std::vector<Channel *>::iterator ChanVecIt;
 class Client{
 	private:
 		// * Utiles
+		struct pollfd*			_clientFd;
 		int						_socket;
 		int						_port;
 		std::string				_hostname;
@@ -57,6 +58,7 @@ class Client{
 
 		// * Getters
 		int								getClientSocket() const	{return _socket; };
+		struct pollfd*					getClientpollfd() const	{return _clientFd; };
 		std::vector<Channel *> const	getUsrChan() const		{return _usrChan; };
 		std::string const				getHostname() const		{return _hostname; };
 		bool							isPasswordOK() const	{return _passwordOk; };
@@ -71,5 +73,6 @@ class Client{
 		void		setNickname(std::string const & ps)		{_nickname = ps; };
 		void		setUsername(std::string const & us)		{_username = us; };
 		void		setRealname(std::string const & pw)		{_realname = pw; };
-		void		setPasswordOk(bool const& pw)			{_passwordOk = pw;};
+		void		setPasswordOk(bool const& pw)			{_passwordOk = pw; };
+		void		setClientPollFd(struct pollfd *oui)		{_clientFd = oui; };
 };
