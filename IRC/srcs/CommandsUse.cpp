@@ -30,6 +30,7 @@ void	CommandsUse::handle(Client* client, std::string const& message){
 	std::stringstream	sstring(message);
 	std::string			SplitCommand;
 
+	std::clog << message << std::endl;
 	while (std::getline(sstring, SplitCommand)) {
 
 		SplitCommand = SplitCommand.substr(0, SplitCommand[SplitCommand.length() - 1] == '\r' ? SplitCommand.length() - 1 : SplitCommand.length());

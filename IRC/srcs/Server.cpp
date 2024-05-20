@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/18 14:04:59 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/20 08:40:59 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	Server::_parsMessage(std::string msg, Client* client){
 
 		client->setMessage("");
 		for (std::vector<std::string>::iterator it = cmd.begin(); it != cmd.end(); it++) {
-			this->_commands->handle(client, *it);
+				this->_commands->handle(client, *it);
 		}
 	}
 	else
@@ -93,7 +93,6 @@ void	Server::_waitForConnections(){
 	}
 
 	for (unsigned int i = 0; i < _clientsReady.size() + 1; i++) {
-		std::cout << i << std::endl;
 		short revents = this->_clientsFd[i].revents;
         if (revents == 0) {
             continue;
@@ -104,10 +103,10 @@ void	Server::_waitForConnections(){
 			Client*	client = this->_clientsReady[i - 1];
 			if (revents & POLLIN) {
                     _clientMessage(client);
-                } else if (revents & (POLLERR | POLLHUP | POLLNVAL)) {
-                    std::cerr << "Erreur : Problème avec fd " << _clientsFd[i].fd << std::endl;
-                    deleteClient(_clientsFd[i].fd);
-				}
+            } else if (revents & (POLLERR | POLLHUP | POLLNVAL)) {
+                std::cerr << "Erreur : Problème avec fd " << _clientsFd[i].fd << std::endl;
+                deleteClient(_clientsFd[i].fd);
+			}
 		}
 	}
 }
@@ -124,6 +123,7 @@ void	Server::IRC(){
 	struct sockaddr_in6		adress;
 	int						adresslen = sizeof(adress);
 
+	signal(SIGINT, signalHandler);
 	//creation of socket
 	if (_socketFd == SOCKET_ERROR)
 		throw(Socket());
@@ -151,7 +151,6 @@ void	Server::IRC(){
 	}
 	std::cout << "Server waiting for connections..." << std::endl;
 	this->_createClientFds();
-	signal(SIGINT, signalHandler);
 	while (stop)
 		this->_waitForConnections();
 }

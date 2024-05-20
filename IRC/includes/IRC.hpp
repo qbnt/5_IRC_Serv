@@ -6,7 +6,7 @@
 /*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 09:49:14 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/17 18:20:25 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/20 08:19:36 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include <ctime>
+# include <csignal>
+# include <cstring>
 # include <errno.h>
 # include <unistd.h>
 # include <arpa/inet.h>
@@ -28,13 +30,13 @@
 # include <netinet/in.h>
 # include <sys/time.h>
 # include <iostream>
+# include <netdb.h>
 # include <string>
 # include <vector>
 # include <map>
 # include <sstream>
 # include <string>
 # include <numeric>
-# include <csignal>
 
 # include "Channel.hpp"
 # include "Client.hpp"
