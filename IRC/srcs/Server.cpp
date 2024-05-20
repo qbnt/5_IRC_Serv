@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/20 08:40:59 by qbanet           ###   ########.fr       */
+/*   Updated: 2024/05/20 15:45:33 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,7 @@ int	Server::addClient(int socket, std::string ip, int port){
 	if (newip.empty() || newip == "1")
 		newip = "127.0.0.1";
 	this->_clientsReady.push_back(new Client(this, socket, newip, port));
+	std::cout << "Client add to vector: " << socket << std::endl;
 	this->_setNonBlocking(socket);
 	this->_createClientFds();
 	return (_clientsReady.size());
@@ -189,6 +190,8 @@ Server::Server(int port, std::string const& password): _port(port), _password(pa
 }
 
 Server::~Server(){
+	for (std::vector<Client*>::iterator it = _clientsReady.begin(); it != _clientsReady.end(); it++)
+		delete *it;
 	_clientsReady.clear();
 	_channels.clear();
 	delete this->_commands;
@@ -259,13 +262,13 @@ void	Server::broadcastChannel(std::string const& msg, Channel const* channel) co
 int	Server::deleteClient(int socket){
 	std::string empty = "";
 
-	for (unsigned int i = 0; i < this->_clientsReady.size(); i++){
-		if (this->_clientsReady[i]->getClientSocket() == socket){
-			for (unsigned int j = 0; j < _channels.size(); j++){
-				if (this->_channels[j]->isInChan(this->_clientsReady[i]))
-					this->_channels[j]->removeUser(this->_clientsReady[i], empty);
+	for (std::vector<Client*>::iterator it = _clientsReady.begin(); it != _clientsReady.end(); it++){
+		if ((*it)->getClientSocket() == socket){
+			for (unsigned int i = 0; i < _channels.size(); i++){
+				if (_channels[i]->isInChan(*it))
+					_channels[i]->removeUser(*it, empty);
 			}
-			this->_clientsReady.erase(this->_clientsReady.begin() + i);
+			_clientsReady.erase(it);
 			break;
 		}
 	}
