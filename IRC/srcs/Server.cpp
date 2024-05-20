@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/20 15:45:33 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/20 16:10:00 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	Server::_waitForConnections(){
 			this->_acceptConnection();
 		} else if (i > 0) {
 			Client*	client = this->_clientsReady[i - 1];
-			if (revents & POLLIN) {
+			if (revents & POLLIN && client) {
                     _clientMessage(client);
             } else if (revents & (POLLERR | POLLHUP | POLLNVAL)) {
                 std::cerr << "Erreur : Problème avec fd " << _clientsFd[i].fd << std::endl;
@@ -190,8 +190,8 @@ Server::Server(int port, std::string const& password): _port(port), _password(pa
 }
 
 Server::~Server(){
-	for (std::vector<Client*>::iterator it = _clientsReady.begin(); it != _clientsReady.end(); it++)
-		delete *it;
+	for (unsigned int i = 0; i < _clientsReady.size(); i++)
+		delete _clientsReady[i];
 	_clientsReady.clear();
 	_channels.clear();
 	delete this->_commands;
