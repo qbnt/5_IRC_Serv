@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/20 16:10:00 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/21 12:22:18 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,8 @@ void	Server::_clientMessage(Client*	client) {
 
 	char buff[BUFFER_SIZE + 1];
 	while (true) {
-		int	res = recv(client->getClientSocket(), buff, sizeof(buff), 0);
+		int res = recv(client->getClientSocket(), buff, sizeof(buff), 0);
 		if (res < 0) {
-			if (errno != EWOULDBLOCK) {
-				std::cout << "Error: recv() failed for fd " << client->getClientSocket() << std::endl;
-				this->deleteClient(client->getClientSocket());
-			}
 			break;
 		} else if (!res) {
 			this->deleteClient(client->getClientSocket());
@@ -84,34 +80,34 @@ void	Server::_clientMessage(Client*	client) {
 	}
 }
 
+int stop = 1;
+
 void	Server::_waitForConnections(){
 
 	int	socketActivity = poll(this->_clientsFd, this->_clientsReady.size() + 1, - 1);
-	if (socketActivity < 0){
+	if (socketActivity < 0 && stop == 1){
 		std::cout << "Error: No socket activity." << std::endl;
 		return ;
 	}
 
 	for (unsigned int i = 0; i < _clientsReady.size() + 1; i++) {
-		short revents = this->_clientsFd[i].revents;
-        if (revents == 0) {
-            continue;
-        }
-		if (this->_clientsFd[i].fd == this->_socketFd) {
-			this->_acceptConnection();
-		} else if (i > 0) {
-			Client*	client = this->_clientsReady[i - 1];
-			if (revents & POLLIN && client) {
-                    _clientMessage(client);
-            } else if (revents & (POLLERR | POLLHUP | POLLNVAL)) {
-                std::cerr << "Erreur : Problème avec fd " << _clientsFd[i].fd << std::endl;
-                deleteClient(_clientsFd[i].fd);
+			short revents = this->_clientsFd[i].revents;
+			if (revents == 0) {
+				continue;
 			}
+			if (this->_clientsFd[i].fd == this->_socketFd) {
+				this->_acceptConnection();
+			} else if (i > 0 && _clientsReady[i - 1]) {
+				Client*	client = this->_clientsReady[i - 1];
+				if ((revents & POLLIN) && client && client->getClientSocket())
+					_clientMessage(client);
+				else if (revents & (POLLERR | POLLHUP | POLLNVAL)) {
+					std::cerr << "Erreur : Problème avec fd " << _clientsFd[i].fd << std::endl;
+					deleteClient(_clientsFd[i].fd);
+				}
 		}
 	}
 }
-
-int stop = 1;
 
 void	signalHandler(int signal){
 	if (signal == SIGINT)
@@ -191,8 +187,10 @@ Server::Server(int port, std::string const& password): _port(port), _password(pa
 
 Server::~Server(){
 	for (unsigned int i = 0; i < _clientsReady.size(); i++)
-		delete _clientsReady[i];
+		deleteClient(_clientsReady[i]->getClientSocket());
 	_clientsReady.clear();
+	for (std::vector<Channel*>::iterator it = _channels.begin(); it != _channels.end(); it++)
+		delete *it;
 	_channels.clear();
 	delete this->_commands;
 	delete [] this->_clientsFd;
@@ -265,9 +263,11 @@ int	Server::deleteClient(int socket){
 	for (std::vector<Client*>::iterator it = _clientsReady.begin(); it != _clientsReady.end(); it++){
 		if ((*it)->getClientSocket() == socket){
 			for (unsigned int i = 0; i < _channels.size(); i++){
-				if (_channels[i]->isInChan(*it))
+				if (_channels[i]->isInChan(*it)){
 					_channels[i]->removeUser(*it, empty);
+				}
 			}
+			delete (*it);
 			_clientsReady.erase(it);
 			break;
 		}
