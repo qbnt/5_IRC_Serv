@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qbanet <qbanet@student.42perpignan.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 09:48:12 by mescobar          #+#    #+#             */
-/*   Updated: 2024/05/21 12:22:18 by mescobar         ###   ########.fr       */
+/*   Updated: 2024/05/21 12:47:27 by qbanet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	Server::_waitForConnections(){
 			}
 			if (this->_clientsFd[i].fd == this->_socketFd) {
 				this->_acceptConnection();
-			} else if (i > 0 && _clientsReady[i - 1]) {
+			} else if (i > 0) {
 				Client*	client = this->_clientsReady[i - 1];
 				if ((revents & POLLIN) && client && client->getClientSocket())
 					_clientMessage(client);
