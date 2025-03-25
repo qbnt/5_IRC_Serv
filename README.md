@@ -2,55 +2,54 @@
 
 ## Description
 
-Ce projet consiste à développer un serveur IRC (Internet Relay Chat) conforme aux spécifications du protocole IRC. L'objectif est de permettre à plusieurs clients de se connecter, de rejoindre des canaux, d'échanger des messages et d'interagir selon les commandes standard du protocole IRC.
+This project consists of developing an IRC (Internet Relay Chat) server compliant with the IRC protocol specifications. The goal is to allow multiple clients to connect, join channels, exchange messages, and interact using standard IRC commands.
 
-## Fonctionnalités
+## 🚀 Features
 
-- Gestion des connexions simultanées de multiples clients
-- Création et gestion des canaux de discussion publics et privés
-- Implémentation des commandes IRC (JOIN, PART, PRIVMSG, NICK...)
-- Gestion des utilisateurs, pseudonymes et droits d'accès
-- Échange de messages privés entre utilisateurs
+- Handle multiple simultaneous client connections
+- Create and manage public and private chat channels
+- Implement IRC commands (JOIN, PART, PRIVMSG, NICK...)
+- Manage users, nicknames, and access rights
+- Private messaging between users
 
-## Prérequis
+## 📦 Requirements
 
-- Système d'exploitation : Linux ou macOS
-- Compilateur C++ compatible avec le standard C++98
+- Operating System: Linux or macOS
+- C++ compiler compatible with C++98 standard
 
-## Installation
+## ⚙️ Installation
 
-1. Cloner le dépôt :
+1. Clone the repository:
 
 ```
 git clone https://github.com/qbnt/5_IRC_Serv.git
 cd 5_IRC_Serv
 ```
 
-2. Compiler le projet :
+2. Compile the project:
 
 ```
 make
 ```
 
-## Utilisation
+## 💡 Usage
 
-- Lancer le serveur :
+- Launch the server:
 
 ```
 ./irc_server <port> <password>
 ```
 
-- Se connecter avec un client IRC :
-  - Hôte : localhost ou adresse IP du serveur
-  - Port : Port spécifié au lancement
-  - Mot de passe : Mot de passe spécifié
+- Connect with an IRC client:
+  - Host: `localhost` or server IP address
+  - Port: The port you specified when launching the server
+  - Password: The password you specified
 
-- Commandes basiques :
-  - Rejoindre un canal : `/join #nom_canal`
-  - Message privé : `/msg pseudo message`
-  - Changer de pseudo : `/nick nouveau_pseudo`
+- Basic commands:
+  - Join a channel: `/join #channel_name`
+  - Private message: `/msg nickname message`
+  - Change nickname: `/nick new_nickname`
 
+## 📄 License
 
-## Licence
-
-Projet sous licence MIT. Voir le fichier [LICENSE](LICENSE).
+Project licensed under the MIT License. See [LICENSE](LICENSE).
